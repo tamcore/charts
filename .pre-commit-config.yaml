@@ -1,0 +1,23 @@
+repos:
+- repo: https://github.com/pre-commit/pre-commit-hooks
+  rev: v4.2.0
+  hooks:
+  - id: check-yaml
+    exclude: ^charts/.*/templates/.*.yaml
+  - id: end-of-file-fixer
+  - id: trailing-whitespace
+  - id: mixed-line-ending
+- repo: https://github.com/Lucas-C/pre-commit-hooks
+  rev: v1.3.0
+  hooks:
+    - id: forbid-crlf
+    - id: remove-crlf
+    - id: forbid-tabs
+    - id: remove-tabs
+      args: [--whitespaces-count, '2']
+# - repo: https://github.com/norwoodj/helm-docs
+#   rev: v1.2.0
+#   hooks:
+#   - id: helm-docs
+#     args:
+#       - --chart-search-root=charts
