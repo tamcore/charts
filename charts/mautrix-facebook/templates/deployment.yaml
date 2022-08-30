@@ -1,0 +1,119 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "mautrix-facebook.fullname" . }}
+  labels:
+    {{- include "mautrix-facebook.labels" . | nindent 4 }}
+spec:
+  replicas: 1
+  strategy:
+    type: Recreate
+  selector:
+    matchLabels:
+      {{- include "mautrix-facebook.selectorLabels" . | nindent 6 }}
+  template:
+    metadata:
+      annotations:
+        checksum/configmap: {{ include (print $.Template.BasePath "/configmap.yaml") . | sha256sum }}
+        checksum/secret: {{ include (print $.Template.BasePath "/secret.yaml") . | sha256sum }}
+      {{- with .Values.podAnnotations }}
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      labels:
+        {{- include "mautrix-facebook.selectorLabels" . | nindent 8 }}
+    spec:
+      {{- with .Values.imagePullSecrets }}
+      imagePullSecrets:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      serviceAccountName: {{ include "mautrix-facebook.serviceAccountName" . }}
+      securityContext:
+        {{- toYaml .Values.podSecurityContext | nindent 8 }}
+      initContainers:
+        - name: config
+          securityContext:
+            runAsUser: 0
+            runAsGroup: 0
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          command: [ "/bin/bash" ]
+          args:
+            - -xc
+            - |
+              # create empty config with some necessary overrides
+              cat > /tmp/empty.yaml << EOC
+              ---
+              bridge:
+                double_puppet_server_map: ""
+                login_shared_secret_map: ""
+                permissions: ""
+              ---
+              bridge:
+                double_puppet_server_map: {}
+                login_shared_secret_map: {}
+                permissions: {}
+              EOC
+
+              yq ea '. as $item ireduce ({}; . * $item )' \
+                /opt/mautrix-facebook/example-config.yaml \
+                /tmp/empty.yaml \
+                /config/config.yaml > /data/config.yaml
+
+              cp -v /registration/registration.yaml /data
+              chown -v $UID:$GUID /data/*.yaml
+          volumeMounts:
+            - name: data
+              mountPath: /data
+            - name: config
+              mountPath: /config
+            - name: registration
+              mountPath: /registration
+      containers:
+        - name: {{ .Chart.Name }}
+          securityContext:
+            {{- toYaml .Values.securityContext | nindent 12 }}
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          ports:
+            - name: http
+              containerPort: {{ .Values.config.appservice.port | default "29319" }}
+              protocol: TCP
+            {{- if .Values.config.metrics.enabled }}
+            - name: metrics
+              containerPort: {{ .Values.config.metrics.listen_port }}
+              protocol: TCP
+            {{- end }}
+          livenessProbe:
+            httpGet:
+              path: /_matrix/mau/live
+              port: http
+          readinessProbe:
+            httpGet:
+              path: /_matrix/mau/live
+              port: http
+          resources:
+            {{- toYaml .Values.resources | nindent 12 }}
+          volumeMounts:
+            - name: data
+              mountPath: /data
+      volumes:
+        - name: registration
+          secret:
+            secretName: {{ include "mautrix-facebook.fullname" . }}
+        - name: config
+          configMap:
+            name: {{ include "mautrix-facebook.fullname" . }}
+        - name: data
+          emptyDir: {}
+      {{- with .Values.nodeSelector }}
+      nodeSelector:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.affinity }}
+      affinity:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.tolerations }}
+      tolerations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}

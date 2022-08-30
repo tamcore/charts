@@ -1,0 +1,21 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ include "mautrix-facebook.fullname" . }}
+  labels:
+    {{- include "mautrix-facebook.labels" . | nindent 4 }}
+spec:
+  type: {{ .Values.service.type }}
+  ports:
+    - port: {{ .Values.service.port }}
+      targetPort: http
+      protocol: TCP
+      name: http
+    {{- if .Values.config.metrics.enabled }}
+    - port: {{ .Values.config.metrics.listen_port }}
+      targetPort: metrics
+      protocol: TCP
+      name: metrics
+    {{- end }}
+  selector:
+    {{- include "mautrix-facebook.selectorLabels" . | nindent 4 }}
