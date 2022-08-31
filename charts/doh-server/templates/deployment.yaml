@@ -1,0 +1,38 @@
+{{- $imageTag := "" }}
+{{- if not .Values.image.tag }}
+{{- $imageTag = print .Chart.AppVersion "-alpine" -}}
+{{- else }}
+{{- $imageTag = .Values.image.tag -}}
+{{- end }}
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "charts.fullname" . }}
+  labels:
+  {{- include "charts.labels" . | nindent 4 }}
+spec:
+  replicas: {{ .Values.replicaCount }}
+  selector:
+    matchLabels:
+    {{- include "charts.selectorLabels" . | nindent 6 }}
+  template:
+    metadata:
+      annotations:
+        checksum/config: {{ include (print $.Template.BasePath "/configmap.yaml") . | sha256sum }}
+      labels:
+      {{- include "charts.selectorLabels" . | nindent 8 }}
+    spec:
+      securityContext: {{- toYaml .Values.securityContext | nindent 8 }}
+      containers:
+      - name: "doh-server"
+        image: {{ .Values.image.repository }}:{{ $imageTag }}
+        imagePullPolicy: {{ .Values.imagePullPolicy }}
+        envFrom:
+        - configMapRef:
+            name: {{ include "charts.fullname" . }}-config
+        resources: {{- toYaml .Values.resources | nindent 10 }}
+        ports:
+          - name: http
+            containerPort: {{ .Values.service.port }}
+            protocol: TCP

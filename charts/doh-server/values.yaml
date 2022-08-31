@@ -1,0 +1,55 @@
+image:
+  # -- image repository
+  repository: "satishweb/doh-server"
+  # -- image tag
+  tag: ""
+  # -- image pull policy
+  pullPolicy: "IfNotPresent"
+
+# -- of replicas to deploy
+replicaCount: 1
+
+resources:
+  # -- The resources limits for the pod
+  limits: {}
+  # -- The requested resources for the pod
+  requests: {}
+
+configuration:
+  # -- Upstream DNS server to use.
+  # In case of an in-cluster pihole, "udp:pihole-dns.pihole.svc:53" is also valid
+  UPSTREAM_DNS_SERVER: "udp:8.8.8.8:53"
+  DOH_HTTP_PREFIX: "/dns-query"
+  DOH_SERVER_TIMEOUT: "10"
+  DOH_SERVER_TRIES: "3"
+  DOH_SERVER_VERBOSE: "false"
+
+# -- Pod Security Context
+# Defaults to running the container as nobody/nogroup
+securityContext:
+  runAsGroup: 65533
+  runAsUser: 65534
+
+service:
+  # -- Service type
+  type: ClusterIP
+  # -- service port
+  port: 8053
+
+ingress:
+  # -- Enable ingress record generation
+  enabled: false
+  # -- IngressClass that will be be used
+  className: ""
+  # -- Additional annotations for the Ingress resource
+  annotations: {}
+    # kubernetes.io/ingress.class: nginx
+    # kubernetes.io/tls-acme: "true"
+    # nginx.ingress.kubernetes.io/configuration-snippet: |
+    #   proxy_hide_header x-powered-by;
+  hosts:
+  - host: chart-example.local
+  tls: []
+  #  - secretName: chart-example-tls
+  #    hosts:
+  #      - chart-example.local
