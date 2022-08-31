@@ -13,7 +13,6 @@
   ],
   "separateMinorPatch": true,
   "pruneStaleBranches": true,
-  "recreateClosed": true,
   "postUpgradeTasks": {
     "commands": ["bash hack/bump.sh"],
     "fileFilters": ["charts/*/Chart.yaml"],
