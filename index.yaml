@@ -1,5 +1,16 @@
 apiVersion: v1
 entries:
+  doh-server:
+  - apiVersion: v2
+    appVersion: v2.3.0
+    created: "2022-08-31T18:01:26.496081649Z"
+    description: A Helm chart for Kubernetes
+    digest: a029f15ea63a470ab51105137ff80584c6eeb0971d3cadc6c46a0390b5625c68
+    name: doh-server
+    type: application
+    urls:
+    - https://github.com/tamcore/charts/releases/download/doh-server-0.0.1/doh-server-0.0.1.tgz
+    version: 0.0.1
   mautrix-facebook:
   - apiVersion: v2
     appVersion: v0.4.0
@@ -43,4 +54,4 @@ entries:
     urls:
     - https://github.com/tamcore/charts/releases/download/mautrix-whatsapp-0.0.1/mautrix-whatsapp-0.0.1.tgz
     version: 0.0.1
-generated: "2022-08-31T18:00:36.004220818Z"
+generated: "2022-08-31T18:01:26.49609255Z"
