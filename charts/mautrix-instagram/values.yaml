@@ -87,6 +87,11 @@ tolerations: []
 
 affinity: {}
 
+hostAliases: []
+# - ip: 10.20.30.40
+#   hostnames:
+#   - git.myhostname
+
 config: {}
 
 registration: {}
