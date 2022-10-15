@@ -31,6 +31,8 @@ securityContext: {}
   # runAsUser: 1000
   # fsGroup: 1337
 
+initContainers: []
+
 service:
   type: ClusterIP
   port: 80
