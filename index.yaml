@@ -13,6 +13,16 @@ entries:
     version: 0.0.1
   mautrix-facebook:
   - apiVersion: v2
+    appVersion: v0.4.1
+    created: "2022-11-15T16:24:28.537834313Z"
+    description: A Matrix-Facebook Messenger puppeting bridge
+    digest: d381d0458a341012f1bee9c23bd5266b13b65ad7b51afdbd99c0a0dba5067438
+    name: mautrix-facebook
+    type: application
+    urls:
+    - https://github.com/tamcore/charts/releases/download/mautrix-facebook-0.0.4/mautrix-facebook-0.0.4.tgz
+    version: 0.0.4
+  - apiVersion: v2
     appVersion: v0.4.0
     created: "2022-10-15T16:57:52.329803008Z"
     description: A Matrix-Facebook Messenger puppeting bridge
@@ -144,4 +154,4 @@ entries:
     urls:
     - https://github.com/tamcore/charts/releases/download/mautrix-whatsapp-0.0.1/mautrix-whatsapp-0.0.1.tgz
     version: 0.0.1
-generated: "2022-11-02T07:00:48.013928088Z"
+generated: "2022-11-15T16:24:28.537867414Z"
