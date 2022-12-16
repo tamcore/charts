@@ -54,6 +54,16 @@ entries:
     version: 0.0.1
   mautrix-instagram:
   - apiVersion: v2
+    appVersion: v0.2.3
+    created: "2022-12-16T20:10:06.78507792Z"
+    description: A Matrix-Instagram DM puppeting bridge
+    digest: 3f49b9aae020a4af90805ca2f0d61c419e4b54cb17e0102d3227f63db2312541
+    name: mautrix-instagram
+    type: application
+    urls:
+    - https://github.com/tamcore/charts/releases/download/mautrix-instagram-0.0.5/mautrix-instagram-0.0.5.tgz
+    version: 0.0.5
+  - apiVersion: v2
     appVersion: v0.2.2
     created: "2022-11-02T07:00:48.013901287Z"
     description: A Matrix-Instagram DM puppeting bridge
@@ -174,4 +184,4 @@ entries:
     urls:
     - https://github.com/tamcore/charts/releases/download/mautrix-whatsapp-0.0.1/mautrix-whatsapp-0.0.1.tgz
     version: 0.0.1
-generated: "2022-12-16T20:09:46.552968264Z"
+generated: "2022-12-16T20:10:06.785387418Z"
