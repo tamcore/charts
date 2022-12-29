@@ -84,9 +84,9 @@ spec:
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           ports:
             - name: http
-              containerPort: {{ .Values.config.appservice.port | default "29318" }}
+              containerPort: {{ ((.Values.config).appservice).port | default "29318" }}
               protocol: TCP
-            {{- if .Values.config.metrics.enabled }}
+            {{- if ((.Values.config).metrics).enabled }}
             - name: metrics
               containerPort: {{ .Values.config.metrics.listen_port }}
               protocol: TCP

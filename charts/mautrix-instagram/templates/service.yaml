@@ -11,7 +11,7 @@ spec:
       targetPort: http
       protocol: TCP
       name: http
-    {{- if .Values.config.metrics.enabled }}
+    {{- if ((.Values.config).metrics).enabled }}
     - port: {{ .Values.config.metrics.listen_port }}
       targetPort: metrics
       protocol: TCP

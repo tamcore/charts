@@ -1,0 +1,34 @@
+config:
+  homeserver:
+    address: http://matrix-synapse:8008
+    domain: local.host
+  appservice:
+    address: http://mautrix-whatsapp:80
+    database:
+      type: postgres
+      uri: postgres://mautrix_wa:MfPlVhXuIFiKsUiZLMi1sWkYtWk9KobYo8EykX5s453s7is3mYdmH277ZLvs0iRH@matrix-postgresql/mautrix_wa
+      as_token: 19c7fb06982c8989396e591796d25c3f08a1c7e35bba0cf14009cf1202f19115
+      hs_token: 027d9713143dd7d7122f4a459e220ed6d2f7f4734f0a62ae7384db9caab06855
+    id: whatsapp
+  metrics:
+    enabled: false
+  whatsapp:
+    os_name: Mautrix-WhatsApp bridge
+    browser_name: opera
+    device_seed: 34b4573f44cb6382e38568d569dd43c96b92de15485344441ac5f92bde6acdfe
+  bridge:
+    provisioning:
+      shared_secret: x9aRrlh7Va5Y05hTonqwdIsW3wMtod0fsuqKYJnJbitdcAwu45NznEJeNWz1Rv7e
+registration:
+  id: whatsapp
+  url: http://mautrix-whatsapp:80
+  rate_limited: false
+  namespaces:
+    users:
+      - regex: ^@wa_[0-9]+:local.host$
+        exclusive: true
+      - regex: ^@whatsappbot:local.host$
+        exclusive: true
+  as_token: 19c7fb06982c8989396e591796d25c3f08a1c7e35bba0cf14009cf1202f19115
+  hs_token: 027d9713143dd7d7122f4a459e220ed6d2f7f4734f0a62ae7384db9caab06855
+  sender_localpart: 323b80723ede653cae76efa1ce5ff6d9

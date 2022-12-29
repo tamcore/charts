@@ -1,0 +1,36 @@
+config:
+  homeserver:
+    address: http://matrix-synapse:8008
+    domain: local.host
+    verify_ssl: false
+  appservice:
+    address: http://mautrix-facebook:80
+    database: postgres://mautrix_fb:186a7ab8fe@matrix-postgresql/mautrix_fb
+    public:
+      shared_secret: a2bd4a379fb3598fc4ccf0e6053bf819857576dda780d745a463ddadd2a3c18a
+    as_token: 5d629361ff0876c0a366ac8d0509410ec1ea14651ed38291a969993cb2fb0b1b
+    hs_token: f300175c87b6d943deaa986ff139d3cdae34b6133c1d470b4b91d1f01a93a97a
+  metrics:
+    enabled: false
+  facebook:
+    default_region_hint: ODN
+    connection_type: WIFI
+    carrier: Verizon
+    hni: 311390
+    device_seed: 34b4573f44cb6382e38568d569dd43c96b92de15485344441ac5f92bde6acdfe
+registration:
+  id: facebook
+  namespaces:
+    users:
+      - exclusive: true
+        regex: '@facebook_.*:local.host'
+      - exclusive: true
+        regex: '@facebookbot:local.host'
+    aliases: []
+  url: http://mautrix-facebook:80
+  rate_limited: false
+  de.sorunome.msc2409.push_ephemeral: true
+  push_ephemeral: true
+  as_token: 5d629361ff0876c0a366ac8d0509410ec1ea14651ed38291a969993cb2fb0b1b
+  hs_token: f300175c87b6d943deaa986ff139d3cdae34b6133c1d470b4b91d1f01a93a97a
+  sender_localpart: C5QyyJdxJEEXG68cbY9CK5xWeZTamVNA4SHoea9y6XEVZl9hyHrbacqVYcFCsUxc
