@@ -87,6 +87,16 @@ hostAliases: []
 #   hostnames:
 #   - git.myhostname
 
+livenessProbe:
+  httpGet:
+    path: /_matrix/mau/live
+    port: http
+
+readinessProbe:
+  httpGet:
+    path: /_matrix/mau/live
+    port: http
+
 config: {}
 
 registration: {}
