@@ -62,7 +62,7 @@ jobs:
 
       - if: steps.list-changed.outputs.changed == 'true' || github.event_name == 'workflow_dispatch'
         name: Start a local k8s cluster
-        uses: nolar/setup-k3d-k3s@v1
+        uses: nolar/setup-k3d-k3s@v1.0.9
         with:
           version: "${{ matrix.k8s_version }}"
 
