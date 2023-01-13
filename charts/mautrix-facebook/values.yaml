@@ -33,6 +33,8 @@ securityContext: {}
 
 initContainers: []
 
+extraContainers: []
+
 service:
   type: ClusterIP
   port: 80
