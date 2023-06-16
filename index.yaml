@@ -14,6 +14,16 @@ entries:
   mautrix-facebook:
   - apiVersion: v2
     appVersion: v0.5.0
+    created: "2023-06-16T15:34:34.050319638Z"
+    description: A Matrix-Facebook Messenger puppeting bridge
+    digest: e2381ce2172b25e0675427be956f71a71a21d9b9d4b6d301c0dbb340ba594cf9
+    name: mautrix-facebook
+    type: application
+    urls:
+    - https://github.com/tamcore/charts/releases/download/mautrix-facebook-0.0.8/mautrix-facebook-0.0.8.tgz
+    version: 0.0.8
+  - apiVersion: v2
+    appVersion: v0.5.0
     created: "2023-06-01T06:13:15.600776194Z"
     description: A Matrix-Facebook Messenger puppeting bridge
     digest: f6389652a8039ce7c00b9cd1bbeda84e2a3ae369eee6dc20444c5e5b0e5bc2bf
@@ -83,6 +93,16 @@ entries:
     - https://github.com/tamcore/charts/releases/download/mautrix-facebook-0.0.1/mautrix-facebook-0.0.1.tgz
     version: 0.0.1
   mautrix-instagram:
+  - apiVersion: v2
+    appVersion: v0.3.0
+    created: "2023-06-16T15:34:34.27185888Z"
+    description: A Matrix-Instagram DM puppeting bridge
+    digest: 5bd4f22e9ab3cac8ba66bcd60708c016820b101635389411201325955f71c488
+    name: mautrix-instagram
+    type: application
+    urls:
+    - https://github.com/tamcore/charts/releases/download/mautrix-instagram-0.0.9/mautrix-instagram-0.0.9.tgz
+    version: 0.0.9
   - apiVersion: v2
     appVersion: v0.3.0
     created: "2023-06-01T06:13:09.678421979Z"
@@ -164,6 +184,16 @@ entries:
     - https://github.com/tamcore/charts/releases/download/mautrix-instagram-0.0.1/mautrix-instagram-0.0.1.tgz
     version: 0.0.1
   mautrix-whatsapp:
+  - apiVersion: v2
+    appVersion: v0.8.6
+    created: "2023-06-16T15:34:34.463496646Z"
+    description: A Matrix-WhatsApp puppeting bridge
+    digest: 8d98765e1d36a3a6ef0a7fffbc2d36ddc7bea8ca95c705c526d9d2ecb4523a16
+    name: mautrix-whatsapp
+    type: application
+    urls:
+    - https://github.com/tamcore/charts/releases/download/mautrix-whatsapp-0.0.17/mautrix-whatsapp-0.0.17.tgz
+    version: 0.0.17
   - apiVersion: v2
     appVersion: v0.8.6
     created: "2023-06-16T13:52:11.660650164Z"
@@ -324,4 +354,4 @@ entries:
     urls:
     - https://github.com/tamcore/charts/releases/download/mautrix-whatsapp-0.0.1/mautrix-whatsapp-0.0.1.tgz
     version: 0.0.1
-generated: "2023-06-16T13:52:11.660779573Z"
+generated: "2023-06-16T15:34:34.463838449Z"
