@@ -22,7 +22,7 @@
     ],
     "executionMode": "update"
   },
-  "regexManagers": [
+  "customManagers": [
     {
       "customType": "regex",
       "fileMatch": [
