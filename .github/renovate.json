@@ -1,18 +1,8 @@
 {
   "$schema": "https://docs.renovatebot.com/renovate-schema.json",
   "extends": [
-    "config:recommended"
-  ],
-  "ignorePresets": [
-    ":prHourlyLimit2",
-    ":prConcurrentLimit10"
-  ],
-  "automergeType": "branch",
-  "labels": [
-    "renovate"
-  ],
-  "separateMinorPatch": true,
-  "pruneStaleBranches": true,
+    "github>tamcore/renovate"
+  ]
   "postUpgradeTasks": {
     "commands": [
       "bash hack/bump.sh"
@@ -21,16 +11,5 @@
       "charts/*/Chart.yaml"
     ],
     "executionMode": "update"
-  },
-  "regexManagers": [
-    {
-      "customType": "regex",
-      "fileMatch": [
-        "^charts/.+/Chart.yaml$"
-      ],
-      "matchStrings": [
-        "#\\s*renovate:\\sdatasource=(?<datasource>.*?)\\sdepName=(?<depName>.*?)(?: registryUrl=(?<registryUrl>.*?))?(?: versioning=(?<versioning>.*?))?\\n(?:app)?[Vv]ersion: \"?(?<currentValue>.*?)\"?\\n"
-      ]
-    }
-  ]
+  }
 }
