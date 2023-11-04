@@ -9,14 +9,9 @@ do
     current_version=$( grep "^version:" ${f} | sed 's/[^0-9\.]//g' )
     if [[ ! -z ${current_version} ]]
     then
-      result=$(
-        echo ${current_version} \
-          | awk -F '-' '{print $1}' \
-          | sed "s/v//" \
-          | cut -d. -f '1 2 3' \
-          | awk -F. -v OFS=. 'NF==1{print ++$NF}; NF>1{if(length($NF+1)>length($NF))$(NF-1)++; $NF=sprintf("%0*d", length($NF), ($NF+1)%(10^length($NF))); print}'
-        )
-      new_version="${result}"
+      slice=( ${current_version//./ } )                   # replace points, split into array
+      ((slice[1]++))                                      # increment minor
+      new_version="${slice[0]}.${slice[1]}.${slice[2]}"   # compose new version
       echo "Bumping ${f}: ${current_version} -> ${new_version}"
 
       if [[ "${OSTYPE}" == "darwin"* ]]
