@@ -8,7 +8,8 @@
       "bash hack/bump.sh"
     ],
     "fileFilters": [
-      "charts/*/Chart.yaml"
+      "charts/*/Chart.yaml",
+      "charts/*/values.yaml"
     ],
     "executionMode": "update"
   }
