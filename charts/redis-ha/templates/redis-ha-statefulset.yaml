@@ -184,7 +184,7 @@ spec:
         {{- end}}
 {{ if regexFind $regexRestoreS3 (toString .Values.restore.s3.source) }}
       - name: restore-s3
-        image: s3cmd/s3cmd:latest
+        image: {{ include "redis-ha.s3.image" . }}
         imagePullPolicy: {{ .Values.image.pullPolicy }}
         resources:
 {{ toYaml .Values.init.resources | indent 10 }}
@@ -211,7 +211,7 @@ spec:
 {{- end }}
 {{ if regexFind $regexRestoreSSH (toString .Values.restore.ssh.source) }}
       - name: restore-ssh
-        image: lgatica/openssh-client:latest
+        image: {{ include "redis-ha.ssh.image" . }}
         imagePullPolicy: {{ .Values.image.pullPolicy }}
         resources:
 {{ toYaml .Values.init.resources | indent 10 }}
@@ -446,10 +446,9 @@ spec:
         - mountPath: /tls-certs
           name: tls-certs
         {{- end }}
-
 {{- if .Values.exporter.enabled }}
       - name: redis-exporter
-        image: "{{ .Values.exporter.image }}:{{ .Values.exporter.tag }}"
+        image: {{ include "redis-ha.exporter.image" . }}
         imagePullPolicy: {{ .Values.exporter.pullPolicy }}
         args:
         {{- range $key, $value := .Values.exporter.extraArgs }}

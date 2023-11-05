@@ -1,3 +1,8 @@
+# If left blank, the chart will default to the individually set 'image.registry' values
+global:
+  image:
+    registry: ""
+
 ## Configure resource requests and limits
 ## ref: http://kubernetes.io/docs/user-guide/compute-resources/
 ##
@@ -44,6 +49,7 @@ configmap:
 configmapTest:
   ## Image for redis-ha-configmap-test hook
   image:
+    # registry: ""
     repository: koalaman/shellcheck
     tag: v0.9.0
   ## Resources for the ConfigMap test pod
@@ -81,6 +87,7 @@ haproxy:
     port: 6380
   replicas: 3
   image:
+    # registry: ""
     repository: haproxy
     tag: 2.8.3
     pullPolicy: IfNotPresent
@@ -216,10 +223,11 @@ rbac:
 ##
 sysctlImage:
   enabled: false
+  image:
+    # registry: ""
+    repository: busybox
+    tag: 1.38
   command: []
-  registry: docker.io
-  repository: busybox
-  tag: 1.36
   pullPolicy: Always
   mountHostSys: false
   resources: {}
@@ -473,8 +481,10 @@ topologySpreadConstraints:
 # Prometheus exporter specific configuration options
 exporter:
   enabled: false
-  image: oliver006/redis_exporter
-  tag: v1.55.0
+  image:
+    # registry: ""
+    repository: oliver006/redis_exporter
+    tag: v1.55.0
   pullPolicy: IfNotPresent
 
   # prometheus port & scrape path
@@ -626,6 +636,10 @@ restore:
   # Set existingSecret to true to use secret specified in existingSecret above
   existingSecret: false
   s3:
+    image:
+      # registry: ""
+      repository: s3cmd/s3cmd
+      tag: latest
     source: false
     # If using existingSecret, that secret must contain:
     # AWS_SECRET_ACCESS_KEY: <YOUR_ACCESS_KEY:>
@@ -635,6 +649,10 @@ restore:
     secret_key: ""
     region: ""
   ssh:
+    image:
+      # registry: ""
+      repository: lgatica/openssh-client
+      tag: latest
     source: false
     key: ""
 
