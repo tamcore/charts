@@ -8,7 +8,7 @@ keywords:
 - keyvalue
 - database
 
-version: 4.24.0
+version: 5.0.0
 # renovate: datasource=github-releases depName=redis/redis
 appVersion: 7.2.3
 
