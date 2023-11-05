@@ -5,8 +5,8 @@
 ## TL;DR
 
 ```bash
-helm repo add dandydev https://dandydeveloper.github.io/charts
-helm install dandydev/redis-ha
+helm repo add tamcore https://tamcore.github.io/charts
+helm install tamcore/redis-ha
 ```
 
 By default this chart install 3 pods total:
