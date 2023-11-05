@@ -2,6 +2,8 @@ apiVersion: v2
 name: redis-ha
 description: This Helm chart provides a highly available Redis implementation with a master/slave configuration and uses Sentinel sidecars for failover management
 
+type: application
+
 home: http://redis.io/
 keywords:
 - redis

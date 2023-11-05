@@ -25,41 +25,32 @@ We truncate at 63 chars because some Kubernetes name fields are limited to this 
 {{- end -}}
 {{- end -}}
 
+{{/*
+Create chart name and version as used by the chart label.
+*/}}
+{{- define "redis-ha.chart" -}}
+{{- printf "%s-%s" .Chart.Name .Chart.Version | replace "+" "_" | trunc 63 | trimSuffix "-" }}
+{{- end }}
 
 {{/*
-Return sysctl image
+Common labels
 */}}
-{{- define "redis.sysctl.image" -}}
-{{- $registry := coalesce .Values.global.image.registry .Values.sysctlImage.image.registry "docker.io" -}}
-{{- $tag := coalesce .Values.sysctlImage.image.tag "latest" | toString -}}
-{{- printf "%s/%s:%s" $registry .Values.sysctlImage.image.repository $tag -}}
-{{- end -}}
+{{- define "redis-ha.labels" -}}
+helm.sh/chart: {{ include "redis-ha.chart" . }}
+{{ include "redis-ha.selectorLabels" . }}
+{{- if .Chart.AppVersion }}
+app.kubernetes.io/version: {{ .Chart.AppVersion | quote }}
+{{- end }}
+app.kubernetes.io/managed-by: {{ .Release.Service }}
+{{- end }}
 
-{{- /*
-Credit: @technosophos
-https://github.com/technosophos/common-chart/
-labels.standard prints the standard Helm labels.
-The standard labels are frequently used in metadata.
-*/ -}}
-{{- define "labels.standard" -}}
-app: {{ template "redis-ha.name" . }}
-heritage: {{ .Release.Service | quote }}
-release: {{ .Release.Name | quote }}
-chart: {{ template "chartref" . }}
-{{- end -}}
-
-{{- /*
-Credit: @technosophos
-https://github.com/technosophos/common-chart/
-chartref prints a chart name and version.
-It does minimal escaping for use in Kubernetes labels.
-Example output:
-  zookeeper-1.2.3
-  wordpress-3.2.1_20170219
-*/ -}}
-{{- define "chartref" -}}
-  {{- replace "+" "_" .Chart.Version | printf "%s-%s" .Chart.Name -}}
-{{- end -}}
+{{/*
+Selector labels
+*/}}
+{{- define "redis-ha.selectorLabels" -}}
+app.kubernetes.io/name: {{ include "redis-ha.name" . }}
+app.kubernetes.io/instance: {{ .Release.Name }}
+{{- end }}
 
 {{/*
 Create the name of the service account to use
@@ -102,6 +93,12 @@ Return the appropriate apiVersion for poddisruptionbudget.
 {{- printf "%s/%s:%s" $registry .Values.image.repository $tag }}
 {{- end }}
 {{- end }}
+
+{{- define "redis-ha.sysctl.image" -}}
+{{- $registry := coalesce .Values.global.image.registry .Values.sysctlImage.image.registry "docker.io" -}}
+{{- $tag := coalesce .Values.sysctlImage.image.tag "latest" | toString -}}
+{{- printf "%s/%s:%s" $registry .Values.sysctlImage.image.repository $tag -}}
+{{- end -}}
 
 {{- define "redis-ha.exporter.image" -}}
 {{- $registry := coalesce .Values.global.image.registry .Values.exporter.image.registry "docker.io" -}}

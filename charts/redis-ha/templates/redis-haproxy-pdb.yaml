@@ -5,14 +5,15 @@ metadata:
   name: {{ template "redis-ha.fullname" . }}-haproxy-pdb
   namespace: {{ .Release.Namespace | quote }}
   labels:
-{{ include "labels.standard" . | indent 4 }}
+    {{- include "redis-ha.labels" . | nindent 4 }}
+    component: haproxy
     {{- range $key, $value := .Values.extraLabels }}
     {{ $key }}: {{ $value | quote }}
     {{- end }}
 spec:
   selector:
     matchLabels:
-      release: {{ .Release.Name }}
-      app: {{ template "redis-ha.name" . }}-haproxy
+      {{- include "redis-ha.selectorLabels" . | nindent 6 }}
+      component: haproxy
 {{ toYaml .Values.haproxy.podDisruptionBudget | indent 2 }}
 {{- end -}}

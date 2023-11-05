@@ -5,10 +5,11 @@ metadata:
   name: {{ template "redis-ha.fullname" . }}-haproxy
   namespace: {{ .Release.Namespace | quote }}
   labels:
-{{ include "labels.standard" . | indent 4 }}
+    {{- include "redis-ha.labels" . | nindent 4 }}
     {{- range $key, $value := .Values.extraLabels }}
     {{ $key }}: {{ $value | quote }}
     {{- end }}
+    component: haproxy
 spec:
   strategy:
     type: RollingUpdate
@@ -16,14 +17,14 @@ spec:
   replicas: {{ .Values.haproxy.replicas }}
   selector:
     matchLabels:
-      app: {{ template "redis-ha.name" . }}-haproxy
-      release: {{ .Release.Name }}
+      {{- include "redis-ha.selectorLabels" . | nindent 6 }}
+      component: haproxy
   template:
     metadata:
       name: {{ template "redis-ha.fullname" . }}-haproxy
       labels:
-        app: {{ template "redis-ha.name" . }}-haproxy
-        release: {{ .Release.Name }}
+        {{- include "redis-ha.selectorLabels" . | nindent 8 }}
+        component: haproxy
         {{- range $key, $value := .Values.haproxy.labels }}
         {{ $key }}: {{ $value | toString }}
         {{- end }}
@@ -66,7 +67,7 @@ spec:
           requiredDuringSchedulingIgnoredDuringExecution:
             - labelSelector:
                 matchLabels:
-                  app: {{ template "redis-ha.name" . }}-haproxy
+                  {{- include "redis-ha.selectorLabels" . | nindent 18 }}
                   release: {{ .Release.Name }}
               topologyKey: kubernetes.io/hostname
     {{- else }}
@@ -75,8 +76,8 @@ spec:
               podAffinityTerm:
                 labelSelector:
                   matchLabels:
-                    app: {{ template "redis-ha.name" . }}-haproxy
-                    release: {{ .Release.Name }}
+                    {{- include "redis-ha.selectorLabels" . | nindent 20 }}
+                    component: haproxy
                 topologyKey: kubernetes.io/hostname
     {{- end }}
     {{- end }}
@@ -87,8 +88,8 @@ spec:
         whenUnsatisfiable: {{ .Values.topologySpreadConstraints.whenUnsatisfiable | default "ScheduleAnyway" }}
         labelSelector:
           matchLabels:
-            app: {{ template "redis-ha.name" . }}-haproxy
-            release: {{ .Release.Name }}
+            {{- include "redis-ha.selectorLabels" . | nindent 12 }}
+            component: haproxy
       {{- end }}
       initContainers:
       - name: config-init

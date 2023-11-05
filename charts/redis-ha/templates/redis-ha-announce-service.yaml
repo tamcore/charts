@@ -8,9 +8,9 @@ apiVersion: v1
 kind: Service
 metadata:
   name: {{ $fullName }}-announce-{{ $i }}
-  namespace: {{ $namespace | quote}}
+  namespace: {{ $namespace | quote }}
   labels:
-{{ include "labels.standard" $root | indent 4 }}
+    {{- include "redis-ha.labels" $ | nindent 4 }}
     {{- range $key, $value := $root.Values.extraLabels }}
     {{ $key }}: {{ $value | quote }}
     {{- end }}
@@ -58,7 +58,6 @@ spec:
     targetPort: {{ $root.Values.exporter.portName }}
   {{- end }}
   selector:
-    release: {{ $root.Release.Name }}
-    app: {{ include "redis-ha.name" $root }}
+    {{- include "redis-ha.selectorLabels" $ | nindent 4 }}
     "statefulset.kubernetes.io/pod-name": {{ $fullName }}-server-{{ $i }}
 {{- end }}

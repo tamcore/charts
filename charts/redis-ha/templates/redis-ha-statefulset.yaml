@@ -7,18 +7,19 @@ metadata:
   name: {{ template "redis-ha.fullname" . }}-server
   namespace: {{ .Release.Namespace | quote }}
   labels:
+    {{- include "redis-ha.labels" . | nindent 4 }}
     {{ template "redis-ha.fullname" . }}: replica
+    component: redis
     {{- range $key, $value := .Values.extraLabels }}
     {{ $key }}: {{ $value | quote }}
     {{- end }}
-{{ include "labels.standard" . | indent 4 }}
   annotations:
 {{ toYaml .Values.redis.annotations | indent 4 }}
 spec:
   selector:
     matchLabels:
-      release: {{ .Release.Name }}
-      app: {{ template "redis-ha.name" . }}
+      {{- include "redis-ha.selectorLabels" . | nindent 6 }}
+      component: redis
   serviceName: {{ template "redis-ha.fullname" . }}
   replicas: {{ .Values.replicas }}
   podManagementPolicy: {{ .Values.podManagementPolicy }}
@@ -37,8 +38,8 @@ spec:
         prometheus.io/path: {{ .Values.exporter.scrapePath }}
       {{- end }}
       labels:
-        release: {{ .Release.Name }}
-        app: {{ template "redis-ha.name" . }}
+        {{- include "redis-ha.selectorLabels" . | nindent 8 }}
+        component: redis
         {{ template "redis-ha.fullname" . }}: replica
         {{- range $key, $value := .Values.labels }}
         {{ $key }}: {{ $value | toString }}
@@ -75,8 +76,8 @@ spec:
           requiredDuringSchedulingIgnoredDuringExecution:
             - labelSelector:
                 matchLabels:
-                  app: {{ template "redis-ha.name" . }}
-                  release: {{ .Release.Name }}
+                  {{- include "redis-ha.selectorLabels" . | nindent 18 }}
+                  component: redis
                   {{ template "redis-ha.fullname" . }}: replica
               topologyKey: kubernetes.io/hostname
     {{- else }}
@@ -85,8 +86,8 @@ spec:
               podAffinityTerm:
                 labelSelector:
                   matchLabels:
-                    app: {{ template "redis-ha.name" . }}
-                    release: {{ .Release.Name }}
+                    {{- include "redis-ha.selectorLabels" . | nindent 20 }}
+                    component: redis
                     {{ template "redis-ha.fullname" . }}: replica
                 topologyKey: kubernetes.io/hostname
     {{- end }}
@@ -98,8 +99,8 @@ spec:
         whenUnsatisfiable: {{ .Values.topologySpreadConstraints.whenUnsatisfiable | default "ScheduleAnyway" }}
         labelSelector:
           matchLabels:
-            app: {{ template "redis-ha.name" . }}
-            release: {{ .Release.Name }}
+            {{- include "redis-ha.selectorLabels" . | nindent 12 }}
+            component: redis
             {{ template "redis-ha.fullname" . }}: replica
       {{- end }}
       {{- if .Values.imagePullSecrets }}
@@ -111,7 +112,7 @@ spec:
       initContainers:
       {{- if .Values.sysctlImage.enabled }}
       - name: init-sysctl
-        image: {{ template "redis.sysctl.image" . }}
+        image: {{ template "redis-ha.sysctl.image" . }}
         imagePullPolicy: {{ .Values.sysctlImage.pullPolicy }}
         resources: {{ toYaml .Values.sysctlImage.resources | nindent 10 }}
         {{- if .Values.sysctlImage.mountHostSys }}

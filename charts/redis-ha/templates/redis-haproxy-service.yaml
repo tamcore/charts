@@ -5,8 +5,8 @@ metadata:
   name: {{ template "redis-ha.fullname" . }}-haproxy
   namespace: {{ .Release.Namespace | quote }}
   labels:
-{{ include "labels.standard" . | indent 4 }}
-    component: {{ template "redis-ha.fullname" . }}-haproxy
+    {{- include "redis-ha.labels" . | nindent 4 }}
+    component: haproxy
 {{- range $key, $value := .Values.extraLabels }}
     {{ $key }}: {{ $value | quote }}
 {{- end }}
@@ -49,6 +49,6 @@ spec:
     targetPort: metrics-port
 {{- end }}
   selector:
-    release: {{ .Release.Name }}
-    app: {{ template "redis-ha.name" . }}-haproxy
+    {{- include "redis-ha.selectorLabels" . | nindent 4 }}
+    component: haproxy
 {{- end }}

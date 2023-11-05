@@ -5,7 +5,7 @@ metadata:
   name: {{ template "redis-ha.fullname" . }}
   namespace: {{ .Values.exporter.serviceMonitor.namespace | default .Release.Namespace | quote }}
   labels:
-{{ include "labels.standard" . | indent 4 }}
+    {{- include "redis-ha.labels" . | nindent 4 }}
     {{- range $key, $value := .Values.extraLabels }}
     {{ $key }}: {{ $value | quote }}
     {{- end }}
@@ -33,7 +33,7 @@ spec:
     - {{ .Release.Namespace | quote }}
   selector:
     matchLabels:
-      app: {{ template "redis-ha.name" . }}
-      release: {{ .Release.Name }}
+      {{- include "redis-ha.selectorLabels" . | nindent 6 }}
       exporter: enabled
+      component: redis
 {{- end }}

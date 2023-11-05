@@ -12,15 +12,14 @@ metadata:
     {{- end }}
 {{- end }}
   labels:
-{{ include "labels.standard" . | indent 4 }}
+    {{- include "redis-ha.labels" . | nindent 4 }}
     {{- range $key, $value := .Values.networkPolicy.labels }}
     {{ $key }}: {{ $value | quote }}
     {{- end }}
 spec:
   podSelector:
     matchLabels:
-      release: {{ .Release.Name }}
-      app: {{ template "redis-ha.name" . }}
+      {{- include "redis-ha.selectorLabels" . | nindent 6 }}
   policyTypes:
     - Ingress
     - Egress
@@ -28,8 +27,7 @@ spec:
     - to:
       - podSelector:
           matchLabels:
-            release: {{ .Release.Name }}
-            app: {{ template "redis-ha.name" . }}
+            {{- include "redis-ha.selectorLabels" . | nindent 12 }}
       ports:
         - port: {{ .Values.redis.port }}
           protocol: TCP
@@ -52,8 +50,7 @@ spec:
     - from:
       - podSelector:
           matchLabels:
-            release: {{ .Release.Name }}
-            app: {{ template "redis-ha.name" . }}
+            {{- include "redis-ha.selectorLabels" . | nindent 12 }}
       ports:
         - port: {{ .Values.redis.port }}
           protocol: TCP
@@ -63,8 +60,7 @@ spec:
     - from:
         - podSelector:
             matchLabels:
-              release: {{ .Release.Name }}
-              app: {{ template "redis-ha.name" . }}-haproxy
+              {{- include "redis-ha.selectorLabels" . | nindent 12 }}
       ports:
         - port: {{ .Values.redis.port }}
           protocol: TCP

@@ -4,7 +4,7 @@ metadata:
   name: {{ template "redis-ha.fullname" . }}
   namespace: {{ .Release.Namespace | quote }}
   labels:
-{{ include "labels.standard" . | indent 4 }}
+    {{- include "redis-ha.labels" . | nindent 4 }}
 {{- if .Values.exporter.enabled }}
     exporter: enabled
 {{- end }}
@@ -53,5 +53,5 @@ spec:
     targetPort: {{ .Values.exporter.portName }}
 {{- end }}
   selector:
-    release: {{ .Release.Name }}
-    app: {{ template "redis-ha.name" . }}
+    {{- include "redis-ha.selectorLabels" . | nindent 4 }}
+    component: redis
