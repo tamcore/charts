@@ -16,6 +16,6 @@ spec:
       # We want to avoid including the Test pods in the budget
       {{ template "redis-ha.fullname" . }}: replica
       {{- include "redis-ha.selectorLabels" . | nindent 6 }}
-      component: redis
+      app.kubernetes.io/component: redis
 {{ toYaml .Values.podDisruptionBudget | indent 2 }}
 {{- end -}}

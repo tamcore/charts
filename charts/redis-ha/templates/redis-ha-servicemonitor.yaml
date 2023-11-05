@@ -35,5 +35,5 @@ spec:
     matchLabels:
       {{- include "redis-ha.selectorLabels" . | nindent 6 }}
       exporter: enabled
-      component: redis
+      app.kubernetes.io/component: redis
 {{- end }}

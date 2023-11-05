@@ -6,7 +6,7 @@ metadata:
   namespace: {{ .Release.Namespace | quote }}
   labels:
     {{- include "redis-ha.labels" . | nindent 4 }}
-    component: haproxy
+    app.kubernetes.io/component: haproxy
 {{- range $key, $value := .Values.extraLabels }}
     {{ $key }}: {{ $value | quote }}
 {{- end }}
@@ -50,5 +50,5 @@ spec:
 {{- end }}
   selector:
     {{- include "redis-ha.selectorLabels" . | nindent 4 }}
-    component: haproxy
+    app.kubernetes.io/component: haproxy
 {{- end }}

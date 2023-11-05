@@ -6,7 +6,7 @@ metadata:
   namespace: {{ .Values.haproxy.metrics.serviceMonitor.namespace | default .Release.Namespace | quote }}
   labels:
     {{- include "redis-ha.labels" . | nindent 4 }}
-    component: haproxy
+    app.kubernetes.io/component: haproxy
     {{- range $key, $value := .Values.extraLabels }}
     {{ $key }}: {{ $value | quote }}
     {{- end }}
@@ -35,5 +35,5 @@ spec:
   selector:
     matchLabels:
       {{- include "redis-ha.selectorLabels" . | nindent 6 }}
-      component: haproxy
+      app.kubernetes.io/component: haproxy
 {{- end }}

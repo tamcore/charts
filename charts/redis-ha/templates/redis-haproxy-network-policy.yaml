@@ -13,7 +13,7 @@ metadata:
   {{- end }}
   labels:
     {{- include "redis-ha.labels" . | nindent 4 }}
-    component: haproxy
+    app.kubernetes.io/component: haproxy
     {{- range $key, $value := .Values.haproxy.networkPolicy.labels }}
     {{ $key }}: {{ $value | quote }}
     {{- end }}
@@ -21,7 +21,7 @@ spec:
   podSelector:
     matchLabels:
       {{- include "redis-ha.selectorLabels" . | nindent 6 }}
-      component: haproxy
+      app.kubernetes.io/component: haproxy
   policyTypes:
     - Ingress
     - Egress

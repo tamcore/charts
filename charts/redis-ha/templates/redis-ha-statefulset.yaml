@@ -9,7 +9,7 @@ metadata:
   labels:
     {{- include "redis-ha.labels" . | nindent 4 }}
     {{ template "redis-ha.fullname" . }}: replica
-    component: redis
+    app.kubernetes.io/component: redis
     {{- range $key, $value := .Values.extraLabels }}
     {{ $key }}: {{ $value | quote }}
     {{- end }}
@@ -19,7 +19,7 @@ spec:
   selector:
     matchLabels:
       {{- include "redis-ha.selectorLabels" . | nindent 6 }}
-      component: redis
+      app.kubernetes.io/component: redis
   serviceName: {{ template "redis-ha.fullname" . }}
   replicas: {{ .Values.replicas }}
   podManagementPolicy: {{ .Values.podManagementPolicy }}
@@ -39,7 +39,7 @@ spec:
       {{- end }}
       labels:
         {{- include "redis-ha.selectorLabels" . | nindent 8 }}
-        component: redis
+        app.kubernetes.io/component: redis
         {{ template "redis-ha.fullname" . }}: replica
         {{- range $key, $value := .Values.labels }}
         {{ $key }}: {{ $value | toString }}
@@ -77,7 +77,7 @@ spec:
             - labelSelector:
                 matchLabels:
                   {{- include "redis-ha.selectorLabels" . | nindent 18 }}
-                  component: redis
+                  app.kubernetes.io/component: redis
                   {{ template "redis-ha.fullname" . }}: replica
               topologyKey: kubernetes.io/hostname
     {{- else }}
@@ -87,7 +87,7 @@ spec:
                 labelSelector:
                   matchLabels:
                     {{- include "redis-ha.selectorLabels" . | nindent 20 }}
-                    component: redis
+                    app.kubernetes.io/component: redis
                     {{ template "redis-ha.fullname" . }}: replica
                 topologyKey: kubernetes.io/hostname
     {{- end }}
@@ -100,7 +100,7 @@ spec:
         labelSelector:
           matchLabels:
             {{- include "redis-ha.selectorLabels" . | nindent 12 }}
-            component: redis
+            app.kubernetes.io/component: redis
             {{ template "redis-ha.fullname" . }}: replica
       {{- end }}
       {{- if .Values.imagePullSecrets }}
