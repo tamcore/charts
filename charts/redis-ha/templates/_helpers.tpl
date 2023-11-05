@@ -106,7 +106,7 @@ Return the appropriate apiVersion for poddisruptionbudget.
 {{- define "redis-ha.exporter.image" -}}
 {{- $registry := coalesce .Values.global.image.registry .Values.exporter.image.registry "docker.io" -}}
 {{- $tag := .Values.exporter.image.tag | default "latest" }}
-{{- printf "%s/%s:%s" $registry .Values.image.repository $tag }}
+{{- printf "%s/%s:%s" $registry .Values.exporter.image.repository $tag }}
 {{- end }}
 
 {{- define "redis-ha.haproxy.image" -}}
