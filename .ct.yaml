@@ -3,6 +3,6 @@ remote: origin
 target-branch: master
 chart-dirs:
   - charts
-helm-extra-args: --debug --timeout 60s
+helm-extra-args: --debug
 check-version-increment: false
 validate-maintainers: false
