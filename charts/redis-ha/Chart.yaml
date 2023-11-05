@@ -10,7 +10,7 @@ keywords:
 
 version: 4.24.0
 # renovate: datasource=github-releases depName=redis/redis
-appVersion: 7.0.9
+appVersion: 7.2.3
 
 icon: https://upload.wikimedia.org/wikipedia/en/thumb/6/6b/Redis_Logo.svg/1200px-Redis_Logo.svg.png
 
