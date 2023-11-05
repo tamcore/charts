@@ -15,7 +15,7 @@ spec:
 {{ toYaml .Values.tolerations | indent 4 }}
   containers:
   - name: "{{ .Release.Name }}-service-test"
-    image: {{ .Values.image.repository }}:{{ .Values.image.tag }}
+    image: {{ include "redis-ha.image" . }}
     command:
       - sh
       - -c

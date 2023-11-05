@@ -92,3 +92,12 @@ Return the appropriate apiVersion for poddisruptionbudget.
 {{- print "policy/v1beta1" -}}
 {{- end -}}
 {{- end -}}
+
+{{- define "redis-ha.image" -}}
+{{- $tag := .Values.image.tag | default .Chart.AppVersion }}
+{{- if .Values.image.flavor }}
+{{- printf "%s:%s-%s" .Values.image.repository $tag .Values.image.flavor }}
+{{- else }}
+{{- printf "%s:%s" .Values.image.repository $tag }}
+{{- end }}
+{{- end }}
