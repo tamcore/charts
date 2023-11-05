@@ -8,7 +8,7 @@ metadata:
   namespace: {{ .Release.Namespace | quote }}
   labels:
     {{- include "redis-ha.labels" . | nindent 4 }}
-    {{ template "redis-ha.fullname" . }}: replica
+    role: replica
     app.kubernetes.io/component: redis
     {{- range $key, $value := .Values.extraLabels }}
     {{ $key }}: {{ $value | quote }}
@@ -40,7 +40,7 @@ spec:
       labels:
         {{- include "redis-ha.selectorLabels" . | nindent 8 }}
         app.kubernetes.io/component: redis
-        {{ template "redis-ha.fullname" . }}: replica
+        role: replica
         {{- range $key, $value := .Values.labels }}
         {{ $key }}: {{ $value | toString }}
         {{- end }}
@@ -78,7 +78,7 @@ spec:
                 matchLabels:
                   {{- include "redis-ha.selectorLabels" . | nindent 18 }}
                   app.kubernetes.io/component: redis
-                  {{ template "redis-ha.fullname" . }}: replica
+                  role: replica
               topologyKey: kubernetes.io/hostname
     {{- else }}
           preferredDuringSchedulingIgnoredDuringExecution:
@@ -88,7 +88,7 @@ spec:
                   matchLabels:
                     {{- include "redis-ha.selectorLabels" . | nindent 20 }}
                     app.kubernetes.io/component: redis
-                    {{ template "redis-ha.fullname" . }}: replica
+                    role: replica
                 topologyKey: kubernetes.io/hostname
     {{- end }}
     {{- end }}
@@ -101,7 +101,7 @@ spec:
           matchLabels:
             {{- include "redis-ha.selectorLabels" . | nindent 12 }}
             app.kubernetes.io/component: redis
-            {{ template "redis-ha.fullname" . }}: replica
+            role: replica
       {{- end }}
       {{- if .Values.imagePullSecrets }}
       imagePullSecrets: {{ toYaml .Values.imagePullSecrets | nindent 8 }}

@@ -14,7 +14,7 @@ spec:
     matchLabels:
       # The replica label is set on StatefulSet pods but not the Test pods
       # We want to avoid including the Test pods in the budget
-      {{ template "redis-ha.fullname" . }}: replica
+      role: replica
       {{- include "redis-ha.selectorLabels" . | nindent 6 }}
       app.kubernetes.io/component: redis
 {{ toYaml .Values.podDisruptionBudget | indent 2 }}
