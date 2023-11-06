@@ -1,0 +1,19 @@
+{{- if .Values.haproxy.podDisruptionBudget -}}
+apiVersion: {{ template "redis-ha.podDisruptionBudget.apiVersion" . }}
+kind: PodDisruptionBudget
+metadata:
+  name: {{ template "redis-ha.fullname" . }}-haproxy-pdb
+  namespace: {{ .Release.Namespace | quote }}
+  labels:
+    {{- include "redis-ha.labels" . | nindent 4 }}
+    app.kubernetes.io/component: haproxy
+    {{- range $key, $value := .Values.extraLabels }}
+    {{ $key }}: {{ $value | quote }}
+    {{- end }}
+spec:
+  selector:
+    matchLabels:
+      {{- include "redis-ha.selectorLabels" . | nindent 6 }}
+      app.kubernetes.io/component: haproxy
+{{ toYaml .Values.haproxy.podDisruptionBudget | indent 2 }}
+{{- end -}}
