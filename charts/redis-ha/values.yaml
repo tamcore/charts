@@ -251,7 +251,7 @@ sysctlImage:
   image:
     # registry: ""
     repository: busybox
-    tag: 1.38
+    tag: 1.36
   command: []
   pullPolicy: Always
   mountHostSys: false
