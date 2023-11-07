@@ -10,9 +10,9 @@ keywords:
 - keyvalue
 - database
 
-version: 5.1.0
+version: 7.3.3
 # renovate: datasource=github-releases depName=redis/redis
-appVersion: 7.2.3
+appVersion: 7.3.3
 
 icon: https://upload.wikimedia.org/wikipedia/en/thumb/6/6b/Redis_Logo.svg/1200px-Redis_Logo.svg.png
 
