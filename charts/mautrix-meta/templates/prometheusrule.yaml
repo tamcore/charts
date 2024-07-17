@@ -1,0 +1,14 @@
+{{- if and ( .Capabilities.APIVersions.Has "monitoring.coreos.com/v1" ) .Values.serviceMonitor.enabled .Values.prometheusRule.enabled }}
+apiVersion: monitoring.coreos.com/v1
+kind: PrometheusRule
+metadata:
+  name: {{ template "mautrix-meta.fullname" . }}
+  namespace: {{ .Release.Namespace }}
+  labels:
+    {{- include "mautrix-meta.labels" . | nindent 4 }}
+spec:
+  groups:
+  - name: {{ template "mautrix-meta.name" . }}
+    rules:
+{{- toYaml .Values.prometheusRule.spec | nindent 4 }}
+{{- end }}
