@@ -29,7 +29,7 @@ version: 5.4.1
 # follow Semantic Versioning. They should reflect the version the application is using.
 # It is recommended to use it with quotes.
 # renovate: datasource=github-releases depName=redis/redis
-appVersion: 7.2.3
+appVersion: 7.4.0
 
 icon: https://upload.wikimedia.org/wikipedia/en/thumb/6/6b/Redis_Logo.svg/1200px-Redis_Logo.svg.png
 
