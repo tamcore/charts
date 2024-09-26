@@ -50,25 +50,7 @@ spec:
           args:
             - -xc
             - |
-              # create empty config with some necessary overrides
-              cat > /tmp/empty.yaml << EOC
-              ---
-              bridge:
-                double_puppet_server_map: ""
-                login_shared_secret_map: ""
-                permissions: ""
-              ---
-              bridge:
-                double_puppet_server_map: {}
-                login_shared_secret_map: {}
-                permissions: {}
-              EOC
-
-              yq ea '. as $item ireduce ({}; . * $item )' \
-                /opt/mautrix-meta/example-config.yaml \
-                /tmp/empty.yaml \
-                /config/config.yaml > /data/config.yaml
-
+              cp -v /config/config.yaml /data
               cp -v /registration/registration.yaml /data
               chown -v $UID:$GUID /data/*.yaml
           volumeMounts:
