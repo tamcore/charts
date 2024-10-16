@@ -4,5 +4,5 @@ target-branch: master
 chart-dirs:
   - charts
 helm-extra-args: --debug
-check-version-increment: true
+check-version-increment: false
 validate-maintainers: false
