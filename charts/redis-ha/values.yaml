@@ -51,7 +51,7 @@ configmapTest:
   image:
     # registry: ""
     repository: koalaman/shellcheck
-    tag: v0.9.0
+    tag: v0.10.0
   ## Resources for the ConfigMap test pod
   resources: {}
 
@@ -251,7 +251,7 @@ sysctlImage:
   image:
     # registry: ""
     repository: busybox
-    tag: 1.36
+    tag: 1.37
   command: []
   pullPolicy: Always
   mountHostSys: false
@@ -509,7 +509,7 @@ exporter:
   image:
     # registry: ""
     repository: oliver006/redis_exporter
-    tag: v1.63.0
+    tag: v1.65.0
   pullPolicy: IfNotPresent
 
   # prometheus port & scrape path
