@@ -12,7 +12,7 @@ concurrency:
 
 jobs:
   pre-commit:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-22.04
 
     steps:
     - name: Checkout
@@ -25,7 +25,8 @@ jobs:
       uses: pre-commit/action@v3.0.0
 
   lint-test-chart:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-22.04
+
     strategy:
       fail-fast: false
       matrix:
