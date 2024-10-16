@@ -13,7 +13,7 @@ permissions:
 
 jobs:
   release-chart:
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-24.04
 
     steps:
       - name: Checkout
@@ -27,7 +27,7 @@ jobs:
           git config user.email "$GITHUB_ACTOR@users.noreply.github.com"
 
       - name: Install Helm
-        uses: azure/setup-helm@v3
+        uses: azure/setup-helm@v4
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
 
