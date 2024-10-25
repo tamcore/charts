@@ -21,6 +21,18 @@ entries:
     urls:
     - https://github.com/tamcore/charts/releases/download/doh-server-0.0.1/doh-server-0.0.1.tgz
     version: 0.0.1
+  eufy-security-ws:
+  - apiVersion: v2
+    appVersion: 1.9.1
+    created: "2024-10-25T12:10:01.042341269Z"
+    description: Small server wrapper around eufy-security-client library to access
+      it via a WebSocket.
+    digest: 25672c9b729fb49ed1e0ca0a839ec7d7c145cc3dc9dfe103892da257a1261327
+    name: eufy-security-ws
+    type: application
+    urls:
+    - https://github.com/tamcore/charts/releases/download/eufy-security-ws-0.1.0/eufy-security-ws-0.1.0.tgz
+    version: 0.1.0
   mautrix-facebook:
   - apiVersion: v2
     appVersion: v0.5.1
@@ -757,4 +769,4 @@ entries:
     urls:
     - https://github.com/tamcore/charts/releases/download/redis-ha-5.0.0/redis-ha-5.0.0.tgz
     version: 5.0.0
-generated: "2024-10-25T09:45:35.404178727Z"
+generated: "2024-10-25T12:10:01.042455652Z"
