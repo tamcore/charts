@@ -131,10 +131,17 @@ monitoring:
     enabled: false
     port: 9234
     # nodePort: 32234
+    # See https://github.com/sapcc/mosquitto-exporter/blob/master/main.go#L70C1-L114C1
+    env: {}
     image:
       repository: sapcc/mosquitto-exporter
       tag: 0.8.0
       pullPolicy: IfNotPresent
+    securityContext: {}
+      # capabilities:
+      #   drop:
+      #   - all
+      # readOnlyRootFilesystem: true
     resources:
       limits:
         cpu: 300m

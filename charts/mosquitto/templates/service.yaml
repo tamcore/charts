@@ -3,39 +3,36 @@ kind: Service
 metadata:
   name: {{ include "mosquitto.fullname" . }}
   labels: {{- include "mosquitto.labels" . | nindent 4 }}
-{{- with .Values.service.annotations }}
-  annotations:
-  {{- range $key, $value := . }}
-    {{ $key }}: {{ $value | quote }}
+  {{- with .Values.service.annotations }}
+  {{- toYaml . | nindent 4 }}
   {{- end }}
-{{- end }}
 spec:
   type: {{ .Values.service.type }}
-{{- with .Values.service.loadBalancerIP }}
+  {{- with .Values.service.loadBalancerIP }}
   loadBalancerIP: {{ . }}
-{{- end }}
-{{- with .Values.service.externalTrafficPolicy }}
+  {{- end }}
+  {{- with .Values.service.externalTrafficPolicy }}
   externalTrafficPolicy: {{ . }}
-{{- end }}
-{{- with .Values.ports }}
+  {{- end }}
+  {{- with .Values.ports }}
   ports:
   {{- range $key, $value := . }}
     - name: {{ $key }}
       port: {{ $value.port }}
-    {{- if $value.nodePort }}
-      nodePort: {{ $value.nodePort }}
-    {{- end }}
+      {{- with $value.nodePort }}
+      nodePort: {{ . }}
+      {{- end }}
       targetPort: {{ $key }}
       protocol: {{ default "TCP" $value.protocol }}
   {{- end }}
-{{- end }}
-{{- if .Values.monitoring.sidecar.enabled }}
-    - name: prometheus
+  {{- end }}
+  {{- if .Values.monitoring.sidecar.enabled }}
+    - name: metrics
       port: {{ .Values.monitoring.sidecar.port }}
-    {{- if .Values.monitoring.sidecar.nodePort }}
-      nodePort: {{ .Values.monitoring.sidecar.nodePort }}
+    {{- with .Values.monitoring.sidecar.nodePort }}
+      nodePort: {{ . }}
     {{- end }}
-      targetPort: prometheus
+      targetPort: metrics
       protocol: TCP
-{{- end }}
+  {{- end }}
   selector: {{- include "mosquitto.selector" . | nindent 4 }}
