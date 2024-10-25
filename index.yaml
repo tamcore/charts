@@ -568,6 +568,17 @@ entries:
   mosquitto:
   - apiVersion: v2
     appVersion: 2.0.20
+    created: "2024-10-25T09:45:35.404045346Z"
+    description: Eclipse Mosquitto is an open source message broker which implements
+      MQTT version 5, 3.1.1 and 3.1
+    digest: 419ad8dd91df1dc0d0c557a31bd26a5fa8f7dae4fa15b40696f5df4cb4fc3372
+    name: mosquitto
+    type: application
+    urls:
+    - https://github.com/tamcore/charts/releases/download/mosquitto-1.0.1/mosquitto-1.0.1.tgz
+    version: 1.0.1
+  - apiVersion: v2
+    appVersion: 2.0.20
     created: "2024-10-25T09:33:21.533922749Z"
     description: Eclipse Mosquitto is an open source message broker which implements
       MQTT version 5, 3.1.1 and 3.1
@@ -746,4 +757,4 @@ entries:
     urls:
     - https://github.com/tamcore/charts/releases/download/redis-ha-5.0.0/redis-ha-5.0.0.tgz
     version: 5.0.0
-generated: "2024-10-25T09:33:21.534062671Z"
+generated: "2024-10-25T09:45:35.404178727Z"
