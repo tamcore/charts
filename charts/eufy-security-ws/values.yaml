@@ -94,6 +94,22 @@ readinessProbe:
   tcpSocket:
     port: http
 
+persistence:
+  enabled: true
+  accessMode: ReadWriteOnce
+  existingClaim: ""
+  mountPath: /data
+  subPath: ""
+  ## database data Persistent Volume Storage Class
+  ## If defined, storageClassName: <storageClass>
+  ## If set to "-", storageClassName: "", which disables dynamic provisioning
+  ## If undefined (the default) or set to null, no storageClassName spec is
+  ##   set, choosing the default provisioner.  (gp2 on AWS, standard on
+  ##   GKE, AWS & OpenStack)
+  ##
+  # storageClass: "-"
+  size: 1Gi
+
 # Additional volumes on the output Deployment definition.
 volumes: []
 # - name: foo
