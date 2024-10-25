@@ -12,3 +12,7 @@ securityContext:
     - all
   readOnlyRootFilesystem: true
   allowPrivilegeEscalation: false
+
+env:
+  "USERNAME": "foo"
+  "PASSWORD": "bar"
