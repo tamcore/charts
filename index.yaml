@@ -565,6 +565,18 @@ entries:
     urls:
     - https://github.com/tamcore/charts/releases/download/mautrix-whatsapp-0.0.1/mautrix-whatsapp-0.0.1.tgz
     version: 0.0.1
+  mosquitto:
+  - apiVersion: v2
+    appVersion: 2.0.20
+    created: "2024-10-25T09:33:21.533922749Z"
+    description: Eclipse Mosquitto is an open source message broker which implements
+      MQTT version 5, 3.1.1 and 3.1
+    digest: 74f451f1d778aff47119430a6f891336d95ec8db29a4b7612b827e5e708f0303
+    name: mosquitto
+    type: application
+    urls:
+    - https://github.com/tamcore/charts/releases/download/mosquitto-1.0.0/mosquitto-1.0.0.tgz
+    version: 1.0.0
   redis-ha:
   - apiVersion: v2
     appVersion: 7.4.1
@@ -734,4 +746,4 @@ entries:
     urls:
     - https://github.com/tamcore/charts/releases/download/redis-ha-5.0.0/redis-ha-5.0.0.tgz
     version: 5.0.0
-generated: "2024-10-16T17:21:18.823637347Z"
+generated: "2024-10-25T09:33:21.534062671Z"
