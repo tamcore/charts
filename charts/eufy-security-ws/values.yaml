@@ -1,5 +1,5 @@
 image:
-  repository: bropat/hassio-eufy-security-ws
+  repository: bropat/eufy-security-ws
   # This sets the pull policy for images.
   pullPolicy: IfNotPresent
   # Overrides the image tag whose default is the chart appVersion.
