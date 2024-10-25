@@ -1,9 +1,8 @@
 replicaCount: 1
-strategyType: Recreate
 
 image:
   repository: eclipse-mosquitto
-  tag: 1.6.12
+  # tag: ""
   pullPolicy: IfNotPresent
 
 imagePullSecrets: []
@@ -19,7 +18,7 @@ serviceAccount:
 
 service:
   type: ClusterIP
-  externalTrafficPolicy: Cluster
+  # externalTrafficPolicy: Cluster
   annotations: {}
     # metallb.universe.tf/allow-shared-ip: pi-hole
 
@@ -62,12 +61,15 @@ resources: {}
   #   memory: 128Mi
 
 podSecurityContext: {}
-  # runAsUser: 1001
-  # fsGroup: 10000
+  # fsGroup: 65534
+  # runAsGroup: 65534
+  # runAsUser: 65534
 
 securityContext: {}
-  # runAsUser: 1001
-  # fsGroup: 10000
+  # capabilities:
+  #   drop:
+  #   - all
+  # readOnlyRootFilesystem: true
 
 nodeSelector: {}
 
