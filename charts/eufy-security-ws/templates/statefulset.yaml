@@ -65,8 +65,11 @@ spec:
               {{- end }}
             {{- end }}
           {{- end }}
-          {{- with .Values.volumeMounts }}
           volumeMounts:
+            - name: data
+              mountPath: {{ .Values.persistence.mountPath }}
+              subPath: {{ .Values.persistence.subPath }}
+          {{- with .Values.volumeMounts }}
             {{- toYaml . | nindent 12 }}
           {{- end }}
       {{- with .Values.volumes }}
