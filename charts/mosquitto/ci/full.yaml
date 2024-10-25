@@ -1,0 +1,68 @@
+replicaCount: 1
+
+service:
+  type: ClusterIP
+  annotations:
+    metallb.universe.tf/allow-shared-ip: foobar
+
+ports:
+  mqtt:
+    port: 1883
+    protocol: TCP
+  websocket:
+    port: 9090
+    protocol: TCP
+
+persistence:
+  enabled: true
+  accessMode: ReadWriteOnce
+  existingClaim: ""
+  mountPath: /mosquitto/data
+  subPath: ""
+  ## database data Persistent Volume Storage Class
+  ## If defined, storageClassName: <storageClass>
+  ## If set to "-", storageClassName: "", which disables dynamic provisioning
+  ## If undefined (the default) or set to null, no storageClassName spec is
+  ##   set, choosing the default provisioner.  (gp2 on AWS, standard on
+  ##   GKE, AWS & OpenStack)
+  ##
+  # storageClass: "-"
+  size: 1Gi
+
+resources:
+  limits:
+    cpu: 100m
+    memory: 128Mi
+  requests:
+    cpu: 100m
+    memory: 128Mi
+
+podSecurityContext:
+  fsGroup: 65534
+  runAsGroup: 65534
+  runAsUser: 65534
+
+securityContext:
+  capabilities:
+    drop:
+    - all
+  readOnlyRootFilesystem: true
+
+monitoring:
+  podMonitor:
+    enabled: true
+  sidecar:
+    enabled: true
+    env: {}
+    securityContext:
+      capabilities:
+        drop:
+        - all
+      readOnlyRootFilesystem: true
+    resources:
+      limits:
+        cpu: 300m
+        memory: 128Mi
+      requests:
+        cpu: 100m
+        memory: 64Mi
