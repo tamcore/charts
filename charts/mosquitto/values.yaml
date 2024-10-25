@@ -111,6 +111,7 @@ config: |
   listener 1883
   listener 9090
   protocol websockets
+  allow_anonymous true
 
 ## Additional volumes.
 extraVolumes: []
@@ -132,9 +133,9 @@ monitoring:
     port: 9234
     # nodePort: 32234
     # See https://github.com/sapcc/mosquitto-exporter/blob/master/main.go#L70C1-L114C1
-    env:
-      - name: "BIND_ADDRESS"
-        value: "9234"
+    env: []
+      # - name: "BIND_ADDRESS"
+      #   value: "0.0.0.0:9234"
     image:
       repository: sapcc/mosquitto-exporter
       tag: 0.8.0
