@@ -1,0 +1,18 @@
+podSecurityContext:
+  fsGroup: 65534
+  runAsGroup: 65534
+  runAsUser: 65534
+  fsGroupChangePolicy: "OnRootMismatch"
+
+securityContext:
+  privileged: false
+  capabilities:
+    add: null
+    drop:
+    - all
+  readOnlyRootFilesystem: true
+  allowPrivilegeEscalation: false
+
+env:
+  "USERNAME": "foo"
+  "PASSWORD": "bar"
