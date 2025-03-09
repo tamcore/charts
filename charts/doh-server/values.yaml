@@ -5,6 +5,8 @@ image:
   tag: ""
   # -- image pull policy
   pullPolicy: "IfNotPresent"
+  # -- image flavour (ubuntu or alpine)
+  flavour: "alpine"
 
 # -- of replicas to deploy
 replicaCount: 1
@@ -53,3 +55,13 @@ ingress:
   #  - secretName: chart-example-tls
   #    hosts:
   #      - chart-example.local
+
+livenessProbe:
+  httpGet:
+    path: /dns-query?name=example.com
+    port: http
+
+readinessProbe:
+  httpGet:
+    path: /dns-query?name=example.com
+    port: http
