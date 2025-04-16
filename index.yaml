@@ -369,6 +369,16 @@ entries:
     version: 0.1.0
   mautrix-whatsapp:
   - apiVersion: v2
+    appVersion: v0.12.0
+    created: "2025-04-16T12:14:18.389345368Z"
+    description: A Matrix-WhatsApp puppeting bridge
+    digest: 605e3675651f15d5795b42cbfe63f4a50e5b9860463c34afe668257711b1ce3b
+    name: mautrix-whatsapp
+    type: application
+    urls:
+    - https://github.com/tamcore/charts/releases/download/mautrix-whatsapp-0.8.0/mautrix-whatsapp-0.8.0.tgz
+    version: 0.8.0
+  - apiVersion: v2
     appVersion: v0.11.4
     created: "2025-03-16T17:24:47.667308237Z"
     description: A Matrix-WhatsApp puppeting bridge
@@ -1142,4 +1152,4 @@ entries:
     urls:
     - https://github.com/tamcore/charts/releases/download/redis-ha-5.0.0/redis-ha-5.0.0.tgz
     version: 5.0.0
-generated: "2025-04-12T07:11:46.455030652Z"
+generated: "2025-04-16T12:14:18.389783612Z"
