@@ -288,6 +288,16 @@ entries:
     version: 0.0.1
   mautrix-meta:
   - apiVersion: v2
+    appVersion: v0.4.6
+    created: "2025-04-16T12:14:36.627289295Z"
+    description: A Matrix-Facebook Messenger and Instagram DM puppeting bridge.
+    digest: 1ebcbcff2459cadd10d1be51c6366f13a8b44094afe21add51906b62ca37860a
+    name: mautrix-meta
+    type: application
+    urls:
+    - https://github.com/tamcore/charts/releases/download/mautrix-meta-0.2.8/mautrix-meta-0.2.8.tgz
+    version: 0.2.8
+  - apiVersion: v2
     appVersion: v0.4.5
     created: "2025-03-16T17:25:01.021476317Z"
     description: A Matrix-Facebook Messenger and Instagram DM puppeting bridge.
@@ -1152,4 +1162,4 @@ entries:
     urls:
     - https://github.com/tamcore/charts/releases/download/redis-ha-5.0.0/redis-ha-5.0.0.tgz
     version: 5.0.0
-generated: "2025-04-16T12:14:18.389783612Z"
+generated: "2025-04-16T12:14:36.627530793Z"
