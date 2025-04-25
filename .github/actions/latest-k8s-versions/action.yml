@@ -9,11 +9,18 @@ inputs:
     description: 'GitHub token (defaults to automatic token)'
     required: false
     default: ${{ github.token }}
+  kind_images:
+    description: 'For each version, verify the kind image kindest/node/${k8s_version} exists. Fallback to older patch if not.'
+    required: false
+    default: 'false'
 
 outputs:
   versions:
     description: 'Comma-separated list of maintained versions'
     value: ${{ steps.get-versions.outputs.versions }}
+  kind_versions:
+    description: 'Comma-separated list of Kind images'
+    value: ${{ steps.get-kind-versions.outputs.kind_versions }}
 
 runs:
   using: "composite"
@@ -49,8 +56,77 @@ runs:
 
         json_output=$( jq -c -n --arg versions "$versions" '$versions | split(",")' )
         echo "versions=${json_output}" >> $GITHUB_OUTPUT
+        echo "versions_raw=${versions}" >> $GITHUB_OUTPUT
 
     - name: Print versions
       shell: bash
       run: |
         echo "Latest ${{ inputs.count }} Kubernetes versions: ${{ steps.get-versions.outputs.versions }}"
+
+    - if: ${{ inputs.kind_images == 'true' }}
+      uses: imjasonh/setup-crane@v0.1
+
+    - name: Verify kind images
+      id: get-kind-versions
+      if: ${{ inputs.kind_images == 'true' }}
+      shell: bash
+      run: |
+        versions=${{ steps.get-versions.outputs.versions_raw }}
+        versions=(${versions//,/ })
+
+        not_found_images=()
+        found_images=()
+
+        base_image="kindest/node"
+
+        for version in "${versions[@]}"; do
+          if ! crane manifest "${base_image}:${kind_image}" &>/dev/null; then
+            not_found_images+=("$version")
+          else
+            found_images+=("$version")
+          fi
+        done
+
+        if [ ${#not_found_images[@]} -ne 0 ]; then
+          echo "::error::The following kind images were not found:"
+          for image in "${not_found_images[@]}"; do
+            echo "::error::- $image"
+          done
+        fi
+
+        # Try to find the latest available patch version for each not found image
+        for image in "${not_found_images[@]}"; do
+          major_minor_version=$(echo "$image" | cut -d '.' -f 1-2)
+
+          latest_patch=$(crane ls "$base_image" | grep "$major_minor_version" | sort -V | tail -n 1)
+          if [ -n "$latest_patch" ]; then
+            echo "Found latest patch version for $image: $latest_patch"
+            found_images+=("$latest_patch")
+          else
+            echo "::error::No available patch version found for $image"
+          fi
+        done
+
+        # Set kind_images output
+        if [ ${#found_images[@]} -ne 0 ]; then
+          echo "kind_images=${found_images[*]}" >> $GITHUB_OUTPUT
+        else
+          echo "::error::No valid kind images found"
+          exit 1
+        fi
+
+        # Print found images
+        echo "Found kind images:"
+        for image in "${found_images[@]}"; do
+          echo "- $image"
+        done
+
+        found_images=$(IFS=, ; echo "${found_images[*]}")
+
+        json_output=$( jq -c -n --arg versions "$found_images" '$versions | split(",")' )
+        echo "kind_versions=${json_output}" >> $GITHUB_OUTPUT
+
+    - name: Print kind versions
+      shell: bash
+      run: |
+        echo "Latest ${{ inputs.count }} Kind versions: ${{ steps.get-kind-versions.outputs.kind_versions }}"

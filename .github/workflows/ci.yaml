@@ -28,7 +28,7 @@ jobs:
     runs-on: ubuntu-24.04
 
     outputs:
-      versions: ${{ steps.get-k8s-versions.outputs.versions }}
+      versions: ${{ steps.get-k8s-versions.outputs.kind_versions }}
 
     steps:
       - name: Checkout
@@ -39,6 +39,7 @@ jobs:
         uses: ./.github/actions/latest-k8s-versions
         with:
           count: 3
+          kind_images: true
 
   lint-test-chart:
     runs-on: ubuntu-24.04
