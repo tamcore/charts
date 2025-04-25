@@ -64,7 +64,7 @@ runs:
         echo "Latest ${{ inputs.count }} Kubernetes versions: ${{ steps.get-versions.outputs.versions }}"
 
     - if: ${{ inputs.kind_images == 'true' }}
-      uses: imjasonh/setup-crane@v0.1
+      uses: imjasonh/setup-crane@31b88efe9de28ae0ffa220711af4b60be9435f6e # v0.4
 
     - name: Verify kind images
       id: get-kind-versions
