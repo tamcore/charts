@@ -1,0 +1,56 @@
+name: 'Get Maintained Kubernetes Versions'
+description: 'Returns latest patches for last n minor versions'
+inputs:
+  count:
+    description: 'Number of minor versions to return'
+    required: false
+    default: '3'
+  github_token:
+    description: 'GitHub token (defaults to automatic token)'
+    required: false
+    default: ${{ github.token }}
+
+outputs:
+  versions:
+    description: 'Comma-separated list of maintained versions'
+    value: ${{ steps.get-versions.outputs.versions }}
+
+runs:
+  using: "composite"
+  steps:
+    - name: Get maintained versions
+      id: get-versions
+      shell: bash
+      env:
+        GITHUB_TOKEN: ${{ inputs.github_token }}
+      run: |
+        if [[ -f k8s_versions.json ]]; then
+          versions=$(jq -r '.versions | join(",")' k8s_versions.json)
+        else
+          count=${{ inputs.count }}
+          versions=$(
+            curl -sLH "Authorization: Bearer $GITHUB_TOKEN" \
+              "https://api.github.com/repos/kubernetes/kubernetes/releases?per_page=100" \
+              | jq -r --arg cnt "$count" '
+                [.[] | select(.prerelease == false and (.tag_name | test("^v\\d+\\.\\d+\\.\\d+$"))) |
+                .tag_name | ltrimstr("v") | split(".") | map(tonumber)] |
+                group_by(.[0], .[1]) |
+                map(max_by(.[2])) |
+                sort_by(.[0], .[1], .[2]) |
+                reverse |
+                .[0:($cnt | tonumber)] |
+                .[] |
+                "v\(.[0]).\(.[1]).\(.[2])"
+              ' | tr '\n' ',' | sed 's/,$//'
+          ) || { echo "::error::Failed to fetch versions"; exit 1; }
+
+          jq -n --arg versions "$versions" '{versions: ($versions | split(","))}' > k8s_versions.json
+        fi
+
+        json_output=$( jq -c -n --arg versions "$versions" '$versions | split(",")' )
+        echo "versions=${json_output}" >> $GITHUB_OUTPUT
+
+    - name: Print versions
+      shell: bash
+      run: |
+        echo "Latest ${{ inputs.count }} Kubernetes versions: ${{ steps.get-versions.outputs.versions }}"
