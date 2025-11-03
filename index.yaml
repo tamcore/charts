@@ -855,6 +855,27 @@ entries:
   redis-ha:
   - apiVersion: v2
     appVersion: 8.2.2
+    created: "2025-11-03T08:07:17.89463033Z"
+    description: This Helm chart provides a highly available Redis implementation
+      with a master/slave configuration and uses Sentinel sidecars for failover management
+    digest: f26e789990923f691c8dcd54be6db242445bbeee833a6ba31c9d7938206ed894
+    home: http://redis.io/
+    icon: https://upload.wikimedia.org/wikipedia/en/thumb/6/6b/Redis_Logo.svg/1200px-Redis_Logo.svg.png
+    keywords:
+    - redis
+    - keyvalue
+    - database
+    name: redis-ha
+    sources:
+    - https://redis.io/download
+    - https://github.com/tamcore/charts/blob/master/charts/redis-ha
+    - https://github.com/oliver006/redis_exporter
+    type: application
+    urls:
+    - https://github.com/tamcore/charts/releases/download/redis-ha-6.1.10/redis-ha-6.1.10.tgz
+    version: 6.1.10
+  - apiVersion: v2
+    appVersion: 8.2.2
     created: "2025-11-03T07:06:04.60679375Z"
     description: This Helm chart provides a highly available Redis implementation
       with a master/slave configuration and uses Sentinel sidecars for failover management
@@ -1840,4 +1861,4 @@ entries:
     urls:
     - https://github.com/tamcore/charts/releases/download/redis-ha-5.0.0/redis-ha-5.0.0.tgz
     version: 5.0.0
-generated: "2025-11-03T07:06:04.607172748Z"
+generated: "2025-11-03T08:07:17.895024093Z"
