@@ -53,6 +53,17 @@ entries:
     version: 0.0.1
   eufy-security-ws:
   - apiVersion: v2
+    appVersion: 1.9.8
+    created: "2026-01-13T07:09:05.914814467Z"
+    description: Small server wrapper around eufy-security-client library to access
+      it via a WebSocket.
+    digest: db1af4bd8b36487411a2655af2c8a21769f3ee0e6b7e8ca9cc739018733564dc
+    name: eufy-security-ws
+    type: application
+    urls:
+    - https://github.com/tamcore/charts/releases/download/eufy-security-ws-0.1.6/eufy-security-ws-0.1.6.tgz
+    version: 0.1.6
+  - apiVersion: v2
     appVersion: 1.9.7
     created: "2025-12-24T12:08:20.347897711Z"
     description: Small server wrapper around eufy-security-client library to access
@@ -2081,4 +2092,4 @@ entries:
     urls:
     - https://github.com/tamcore/charts/releases/download/redis-ha-5.0.0/redis-ha-5.0.0.tgz
     version: 5.0.0
-generated: "2025-12-24T12:08:20.348187002Z"
+generated: "2026-01-13T07:09:05.915035109Z"
