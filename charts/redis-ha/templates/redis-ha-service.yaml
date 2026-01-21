@@ -5,6 +5,7 @@ metadata:
   namespace: {{ .Release.Namespace | quote }}
   labels:
     {{- include "redis-ha.labels" . | nindent 4 }}
+    app.kubernetes.io/component: redis
 {{- if .Values.exporter.enabled }}
     exporter: enabled
 {{- end }}
