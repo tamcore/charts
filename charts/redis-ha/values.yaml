@@ -509,7 +509,7 @@ exporter:
   image:
     # registry: ""
     repository: oliver006/redis_exporter
-    tag: v1.80.1
+    tag: v1.80.2
   pullPolicy: IfNotPresent
 
   # prometheus port & scrape path
