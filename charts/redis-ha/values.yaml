@@ -89,7 +89,7 @@ haproxy:
   image:
     # registry: ""
     repository: haproxy
-    tag: 3.3.2
+    tag: 3.3.3
     pullPolicy: IfNotPresent
 
   ## Custom labels for the haproxy pod
