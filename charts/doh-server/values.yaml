@@ -56,6 +56,19 @@ ingress:
   #    hosts:
   #      - chart-example.local
 
+
+# Gateway API HTTPRoute — alternative to Ingress for clusters running nginx-gateway-fabric
+# or another Gateway API implementation.
+# The ResponseHeaderModifier filter removes the X-Powered-By upstream response header,
+# replacing the previous configuration-snippet annotation.
+httpRoute:
+  enabled: false
+  parentRefs: []
+  #  - name: nginx-gateway
+  #    namespace: nginx-gateway
+  hostnames: []
+  #  - doh.example.com
+
 livenessProbe:
   httpGet:
     path: /dns-query?name=example.com
