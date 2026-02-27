@@ -3,6 +3,16 @@ entries:
   doh-server:
   - apiVersion: v2
     appVersion: v2.3.10
+    created: "2026-02-27T08:40:16.723215334Z"
+    description: A Helm chart for Kubernetes
+    digest: 06a9907f50132f28d3c3814f5d5dd923f20aa33f6fa3a16e28d9488677bbc740
+    name: doh-server
+    type: application
+    urls:
+    - https://github.com/tamcore/charts/releases/download/doh-server-0.3.1/doh-server-0.3.1.tgz
+    version: 0.3.1
+  - apiVersion: v2
+    appVersion: v2.3.10
     created: "2026-02-26T10:00:49.724481725Z"
     description: A Helm chart for Kubernetes
     digest: dca3a8b405ac9d4494d98bf6fdac968cd465b18d102e18d6bb9228735479b19c
@@ -2290,4 +2300,4 @@ entries:
     urls:
     - https://github.com/tamcore/charts/releases/download/redis-ha-5.0.0/redis-ha-5.0.0.tgz
     version: 5.0.0
-generated: "2026-02-26T10:00:49.724854672Z"
+generated: "2026-02-27T08:40:16.723899723Z"
