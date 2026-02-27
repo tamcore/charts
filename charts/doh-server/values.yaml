@@ -68,6 +68,10 @@ httpRoute:
   #    namespace: nginx-gateway
   hostnames: []
   #  - doh.example.com
+  matches: []
+  #  - path:
+  #      type: PathPrefix
+  #      value: /dns-query
 
 livenessProbe:
   httpGet:
