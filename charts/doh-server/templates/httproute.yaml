@@ -13,7 +13,11 @@ spec:
     {{- toYaml .Values.httpRoute.hostnames | nindent 4 }}
   {{- end }}
   rules:
-    - filters:
+    - {{- if .Values.httpRoute.matches }}
+      matches:
+        {{- toYaml .Values.httpRoute.matches | nindent 8 }}
+      {{- end }}
+      filters:
         - type: ResponseHeaderModifier
           responseHeaderModifier:
             remove:
