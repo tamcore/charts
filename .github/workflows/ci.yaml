@@ -28,18 +28,28 @@ jobs:
     runs-on: ubuntu-24.04
 
     outputs:
-      versions: ${{ steps.get-k8s-versions.outputs.kind_versions }}
+      versions: ${{ steps.get-k8s-versions.outputs.versions }}
 
     steps:
-      - name: Checkout
-        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6
+      - uses: imjasonh/setup-crane@6da1ae018866400525525ce74ff892880c099987 # v0.5
 
-      - name: Get latest Kubernetes versions
+      - name: Determine latest kind versions
         id: get-k8s-versions
-        uses: ./.github/actions/latest-k8s-versions
-        with:
-          count: 3
-          kind_images: true
+        shell: bash
+        run: |
+          set -x
+          KIND_VERSIONS=$(crane ls kindest/node | sort -n | grep ^v)
+          versions=$(for kind_minor in $(echo "$KIND_VERSIONS" | cut -d '.' -f2 | sort | uniq | tail -3)
+          do
+            echo "$KIND_VERSIONS" | grep "v1.${kind_minor}" | tail -1
+          done | tr '\n' ',' | sed 's/,$//')
+          json_output=$( jq -c -n --arg versions "$versions" '$versions | split(",")' )
+          echo "versions=${json_output}" >> $GITHUB_OUTPUT
+
+      - name: Print versions
+        shell: bash
+        run: |
+          echo "Detected KiND versions: ${{ steps.get-k8s-versions.outputs.versions }}"
 
   lint-test-chart:
     runs-on: ubuntu-24.04
