@@ -38,6 +38,7 @@ persistence:
   existingClaim: ""
   mountPath: /mosquitto/data
   subPath: ""
+  labels: {}
   ## database data Persistent Volume Storage Class
   ## If defined, storageClassName: <storageClass>
   ## If set to "-", storageClassName: "", which disables dynamic provisioning
