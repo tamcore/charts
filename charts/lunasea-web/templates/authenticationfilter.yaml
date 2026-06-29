@@ -1,0 +1,14 @@
+{{- if and .Values.httpRoute.enabled .Values.basicAuth.enabled }}
+apiVersion: gateway.nginx.org/v1alpha1
+kind: AuthenticationFilter
+metadata:
+  name: {{ include "lunasea-web.fullname" . }}-basic-auth
+  labels:
+    {{- include "lunasea-web.labels" . | nindent 4 }}
+spec:
+  type: Basic
+  basic:
+    realm: {{ .Values.basicAuth.realm | quote }}
+    secretRef:
+      name: {{ include "lunasea-web.basicAuthSecretName" . }}
+{{- end }}

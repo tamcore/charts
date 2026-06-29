@@ -1,0 +1,25 @@
+apiVersion: v2
+name: lunasea-web
+description: Self-hosted web build of LunaSea — a controller dashboard for self-hosted media software (Radarr, Sonarr, Lidarr, SABnzbd, NZBGet, Tautulli, ...).
+type: application
+
+# This is the chart version. This version number should be incremented each time you make changes
+# to the chart and its templates, including the app version.
+# Versions are expected to follow Semantic Versioning (https://semver.org/)
+version: 0.1.0
+
+# This is the version number of the application being deployed.
+# It is recommended to use it with quotes.
+# renovate: datasource=docker depName=ghcr.io/alysson-souza/lunasea-web
+appVersion: "0.4.0"
+
+home: https://github.com/alysson-souza/lunasea-web
+sources:
+  - https://github.com/alysson-souza/lunasea-web
+keywords:
+  - lunasea
+  - media
+  - dashboard
+  - radarr
+  - sonarr
+  - self-hosted

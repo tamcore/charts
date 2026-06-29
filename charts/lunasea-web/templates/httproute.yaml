@@ -1,0 +1,51 @@
+{{- if .Values.httpRoute.enabled }}
+apiVersion: gateway.networking.k8s.io/v1
+kind: HTTPRoute
+metadata:
+  name: {{ include "lunasea-web.fullname" . }}
+  labels:
+    {{- include "lunasea-web.labels" . | nindent 4 }}
+spec:
+  parentRefs:
+    {{- range .Values.httpRoute.parentRefs }}
+    - name: {{ .name }}
+      {{- with .namespace }}
+      namespace: {{ . }}
+      {{- end }}
+      group: {{ .group | default "gateway.networking.k8s.io" }}
+      kind: {{ .kind | default "Gateway" }}
+      {{- with .sectionName }}
+      sectionName: {{ . }}
+      {{- end }}
+    {{- end }}
+  {{- with .Values.httpRoute.hostnames }}
+  hostnames:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
+  rules:
+    - matches:
+        {{- with .Values.httpRoute.matches }}
+        {{- toYaml . | nindent 8 }}
+        {{- else }}
+        - path:
+            type: PathPrefix
+            value: /
+        {{- end }}
+      filters:
+        {{- if .Values.basicAuth.enabled }}
+        - type: ExtensionRef
+          extensionRef:
+            group: gateway.nginx.org
+            kind: AuthenticationFilter
+            name: {{ include "lunasea-web.fullname" . }}-basic-auth
+        {{- end }}
+        {{- with .Values.httpRoute.extraFilters }}
+        {{- toYaml . | nindent 8 }}
+        {{- end }}
+      backendRefs:
+        - name: {{ include "lunasea-web.fullname" . }}
+          group: ""
+          kind: Service
+          port: {{ .Values.service.port }}
+          weight: 1
+{{- end }}

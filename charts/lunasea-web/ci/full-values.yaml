@@ -1,0 +1,30 @@
+# Exercises ingress + basic auth + secure contexts + resources.
+# httpRoute stays disabled: NGINX Gateway Fabric CRDs are not present in the CI
+# KinD cluster. The httpRoute / AuthenticationFilter path is validated locally
+# via `helm template`.
+persistence:
+  enabled: true
+  size: 128Mi
+
+resources:
+  limits:
+    cpu: 500m
+    memory: 256Mi
+  requests:
+    cpu: 50m
+    memory: 64Mi
+
+basicAuth:
+  enabled: true
+  realm: LunaSea
+  # synthetic sample credential (user "demo"); never a real secret
+  htpasswd: "demo:$apr1$X6N4z1pP$mn5cYx8Qd7nO0rJ8a1Qe2/"
+
+ingress:
+  enabled: true
+  className: nginx
+  hosts:
+    - host: lunasea.chart-example.local
+      paths:
+        - path: /
+          pathType: Prefix
