@@ -9,10 +9,22 @@ metadata:
     "helm.sh/hook-delete-policy": before-hook-creation,hook-succeeded
 spec:
   restartPolicy: Never
+  automountServiceAccountToken: false
+  securityContext:
+    runAsNonRoot: true
+    runAsUser: 65534
+    seccompProfile:
+      type: RuntimeDefault
   containers:
     - name: wget
       image: "{{ .Values.tests.image.repository }}:{{ .Values.tests.image.tag }}"
       imagePullPolicy: {{ .Values.tests.image.pullPolicy }}
+      securityContext:
+        allowPrivilegeEscalation: false
+        readOnlyRootFilesystem: true
+        capabilities:
+          drop:
+            - ALL
       command: ["wget"]
       args:
         - "--spider"

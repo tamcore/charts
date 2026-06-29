@@ -142,8 +142,9 @@ basicAuth:
   enabled: false
   # -- Authentication realm
   realm: LunaSea
-  # -- Use an existing secret (must contain keys "auth" and/or "htpasswd").
-  # When set, the chart does not create a secret.
+  # -- Use an existing secret. It MUST contain an htpasswd payload under the key
+  # "auth" (read by both ingress-nginx and the NGINX Gateway Fabric
+  # AuthenticationFilter). When set, the chart does not create a secret.
   existingSecret: ""
   # -- htpasswd payload used to create the secret when existingSecret is empty.
   # Generate with: htpasswd -nbB <user> <pass>
