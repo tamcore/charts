@@ -6,7 +6,7 @@ metadata:
     {{- include "lunasea-web.labels" . | nindent 4 }}
 spec:
   replicas: {{ .Values.replicaCount }}
-  serviceName: {{ include "lunasea-web.headlessServiceName" . }}
+  serviceName: {{ include "lunasea-web.fullname" . }}
   selector:
     matchLabels:
       {{- include "lunasea-web.selectorLabels" . | nindent 6 }}

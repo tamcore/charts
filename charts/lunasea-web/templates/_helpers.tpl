@@ -63,13 +63,6 @@ Create the name of the service account to use
 {{- end }}
 
 {{/*
-Name of the headless service used by the StatefulSet.
-*/}}
-{{- define "lunasea-web.headlessServiceName" -}}
-{{- printf "%s-headless" (include "lunasea-web.fullname" .) | trunc 63 | trimSuffix "-" }}
-{{- end }}
-
-{{/*
 Resolve the Basic Auth secret name: use an existing secret if provided,
 otherwise the chart-managed secret.
 */}}
