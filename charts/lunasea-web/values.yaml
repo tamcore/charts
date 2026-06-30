@@ -188,15 +188,17 @@ httpRoute:
   matches: []
   # -- Additional HTTPRoute filters appended after the auth filter
   extraFilters: []
-  # -- PathPrefix matches served WITHOUT the basic-auth AuthenticationFilter
-  # (only applies when basicAuth.enabled). PathPrefix matches per path segment,
-  # so use this for directories/exact paths like "/manifest.json" or "/assets".
+  # -- Serve the LunaSea PWA manifest + icons without the basic-auth
+  # AuthenticationFilter (only applies when basicAuth.enabled). The OS fetches
+  # these without credentials when adding the site to the home screen, so
+  # otherwise the home-screen icon is blank. The exact asset paths are built
+  # into the chart template — no need to enumerate them.
+  bypassAuthForPWA: true
+  # -- Extra PathPrefix matches served WITHOUT basic auth (in addition to the
+  # built-in PWA assets). PathPrefix matches per path segment.
   publicPathPrefixes: []
-  # -- Exact paths served WITHOUT the basic-auth AuthenticationFilter (only
-  # applies when basicAuth.enabled). Use for root-level PWA assets the OS
-  # fetches without credentials when adding to the home screen — otherwise the
-  # icon is blank. PathPrefix can't match these ("/apple-icon" != the file
-  # "/apple-icon-180x180.png"), so list the exact filenames here.
+  # -- Extra Exact paths served WITHOUT basic auth (in addition to the built-in
+  # PWA assets).
   publicPaths: []
 
 # NetworkPolicy — restrict pod traffic. Requires a CNI/controller that enforces

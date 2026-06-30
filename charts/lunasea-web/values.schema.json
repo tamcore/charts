@@ -134,6 +134,7 @@
         "hostnames": { "type": "array", "items": { "type": "string" } },
         "matches": { "type": "array" },
         "extraFilters": { "type": "array" },
+        "bypassAuthForPWA": { "type": "boolean" },
         "publicPathPrefixes": { "type": "array", "items": { "type": "string" } },
         "publicPaths": { "type": "array", "items": { "type": "string" } }
       }

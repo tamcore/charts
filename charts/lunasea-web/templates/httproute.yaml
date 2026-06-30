@@ -22,20 +22,26 @@ spec:
   hostnames:
     {{- toYaml . | nindent 4 }}
   {{- end }}
+  {{- /* LunaSea PWA assets the OS fetches without credentials when adding to the
+         home screen. Exempted from basic auth so the home-screen icon renders.
+         NGINX Gateway Fabric supports only Exact/PathPrefix (no regex), and
+         PathPrefix matches per segment, so each root-level icon is an Exact path. */}}
+  {{- $pwaPaths := list }}
+  {{- if .Values.httpRoute.bypassAuthForPWA }}
+  {{- $pwaPaths = list "/manifest.json" "/browserconfig.xml" "/favicon.ico" "/favicon-16x16.png" "/favicon-32x32.png" "/favicon-96x96.png" "/apple-icon-57x57.png" "/apple-icon-60x60.png" "/apple-icon-72x72.png" "/apple-icon-76x76.png" "/apple-icon-114x114.png" "/apple-icon-120x120.png" "/apple-icon-144x144.png" "/apple-icon-152x152.png" "/apple-icon-180x180.png" "/android-icon-36x36.png" "/android-icon-48x48.png" "/android-icon-72x72.png" "/android-icon-96x96.png" "/android-icon-144x144.png" "/android-icon-192x192.png" "/ms-icon-144x144.png" }}
+  {{- end }}
+  {{- $exactPublic := concat $pwaPaths (.Values.httpRoute.publicPaths | default (list)) }}
   rules:
-    {{- if and .Values.basicAuth.enabled (or .Values.httpRoute.publicPathPrefixes .Values.httpRoute.publicPaths) }}
-    # Public (unauthenticated) paths — e.g. the PWA manifest + icons, which the
-    # OS fetches without credentials when adding the site to the home screen.
+    {{- if and .Values.basicAuth.enabled (or .Values.httpRoute.publicPathPrefixes $exactPublic) }}
+    # Public (unauthenticated) paths served without the AuthenticationFilter.
     # Listed first; more specific path matches take precedence over "/".
-    # NB: PathPrefix matches per path segment ("/x" does not match "/x-1.png"),
-    # so root-level icon files must be listed under publicPaths (Exact).
     - matches:
         {{- range .Values.httpRoute.publicPathPrefixes }}
         - path:
             type: PathPrefix
             value: {{ . | quote }}
         {{- end }}
-        {{- range .Values.httpRoute.publicPaths }}
+        {{- range $exactPublic }}
         - path:
             type: Exact
             value: {{ . | quote }}
