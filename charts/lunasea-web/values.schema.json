@@ -136,6 +136,37 @@
         "extraFilters": { "type": "array" }
       }
     },
+    "networkPolicy": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "enabled": { "type": "boolean" },
+        "annotations": { "type": "object" },
+        "labels": { "type": "object" },
+        "ingressRules": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": ["selectors"],
+            "properties": {
+              "selectors": { "type": "array", "items": { "type": "object" } },
+              "ports": { "type": "array", "items": { "type": "object" } }
+            }
+          }
+        },
+        "egressRules": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": ["selectors"],
+            "properties": {
+              "selectors": { "type": "array", "items": { "type": "object" } },
+              "ports": { "type": "array", "items": { "type": "object" } }
+            }
+          }
+        }
+      }
+    },
     "tests": {
       "type": "object",
       "additionalProperties": false,

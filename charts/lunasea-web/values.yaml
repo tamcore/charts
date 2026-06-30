@@ -189,6 +189,44 @@ httpRoute:
   # -- Additional HTTPRoute filters appended after the auth filter
   extraFilters: []
 
+# NetworkPolicy — restrict pod traffic. Requires a CNI/controller that enforces
+# NetworkPolicies (k3s bundled kube-router, Calico, Cilium, ...). When enabled,
+# DNS egress (port 53) is always permitted; everything else is denied unless
+# listed below. lunasea-web's gateway only ever talks to the backends you
+# configure (Radarr/Sonarr/SABnzbd/...) — it makes no direct internet requests —
+# so a backends-only egress allowlist is sufficient.
+networkPolicy:
+  # -- Create a NetworkPolicy for the pod
+  enabled: false
+  # -- Extra annotations for the NetworkPolicy
+  annotations: {}
+  # -- Extra labels for the NetworkPolicy
+  labels: {}
+  # -- Ingress allowlist. Each entry has `selectors` (a list of NetworkPolicy
+  # peers, templated) and optional `ports` (defaults to service.targetPort).
+  # Empty means no ingress is allowed.
+  ingressRules: []
+    # - selectors:
+    #     - namespaceSelector:
+    #         matchLabels:
+    #           kubernetes.io/metadata.name: nginx-gateway
+    #   ports:
+    #     - port: 8080
+    #       protocol: TCP
+  # -- Egress allowlist. Each entry has `selectors` and optional `ports`.
+  # DNS (port 53) is always permitted automatically.
+  egressRules: []
+    # - selectors:
+    #     - namespaceSelector:
+    #         matchLabels:
+    #           kubernetes.io/metadata.name: media
+    #       podSelector:
+    #         matchLabels:
+    #           app.kubernetes.io/name: radarr
+    #   ports:
+    #     - port: 7878
+    #       protocol: TCP
+
 tests:
   image:
     # -- Image used by the helm test connection pod
