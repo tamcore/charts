@@ -23,14 +23,21 @@ spec:
     {{- toYaml . | nindent 4 }}
   {{- end }}
   rules:
-    {{- if and .Values.basicAuth.enabled .Values.httpRoute.publicPathPrefixes }}
+    {{- if and .Values.basicAuth.enabled (or .Values.httpRoute.publicPathPrefixes .Values.httpRoute.publicPaths) }}
     # Public (unauthenticated) paths — e.g. the PWA manifest + icons, which the
     # OS fetches without credentials when adding the site to the home screen.
     # Listed first; more specific path matches take precedence over "/".
+    # NB: PathPrefix matches per path segment ("/x" does not match "/x-1.png"),
+    # so root-level icon files must be listed under publicPaths (Exact).
     - matches:
         {{- range .Values.httpRoute.publicPathPrefixes }}
         - path:
             type: PathPrefix
+            value: {{ . | quote }}
+        {{- end }}
+        {{- range .Values.httpRoute.publicPaths }}
+        - path:
+            type: Exact
             value: {{ . | quote }}
         {{- end }}
       {{- with .Values.httpRoute.extraFilters }}

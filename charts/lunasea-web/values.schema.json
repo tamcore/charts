@@ -134,7 +134,8 @@
         "hostnames": { "type": "array", "items": { "type": "string" } },
         "matches": { "type": "array" },
         "extraFilters": { "type": "array" },
-        "publicPathPrefixes": { "type": "array", "items": { "type": "string" } }
+        "publicPathPrefixes": { "type": "array", "items": { "type": "string" } },
+        "publicPaths": { "type": "array", "items": { "type": "string" } }
       }
     },
     "networkPolicy": {
