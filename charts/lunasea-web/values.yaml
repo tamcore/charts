@@ -188,6 +188,11 @@ httpRoute:
   matches: []
   # -- Additional HTTPRoute filters appended after the auth filter
   extraFilters: []
+  # -- Path prefixes served WITHOUT the basic-auth AuthenticationFilter (only
+  # applies when basicAuth.enabled). Use for PWA assets the OS fetches without
+  # credentials when adding to the home screen — otherwise the icon is blank.
+  # e.g. ["/manifest.json", "/apple-icon", "/android-icon", "/favicon"]
+  publicPathPrefixes: []
 
 # NetworkPolicy — restrict pod traffic. Requires a CNI/controller that enforces
 # NetworkPolicies (k3s bundled kube-router, Calico, Cilium, ...). When enabled,

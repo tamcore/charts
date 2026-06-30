@@ -23,6 +23,27 @@ spec:
     {{- toYaml . | nindent 4 }}
   {{- end }}
   rules:
+    {{- if and .Values.basicAuth.enabled .Values.httpRoute.publicPathPrefixes }}
+    # Public (unauthenticated) paths — e.g. the PWA manifest + icons, which the
+    # OS fetches without credentials when adding the site to the home screen.
+    # Listed first; more specific path matches take precedence over "/".
+    - matches:
+        {{- range .Values.httpRoute.publicPathPrefixes }}
+        - path:
+            type: PathPrefix
+            value: {{ . | quote }}
+        {{- end }}
+      {{- with .Values.httpRoute.extraFilters }}
+      filters:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      backendRefs:
+        - name: {{ include "lunasea-web.fullname" . }}
+          group: ""
+          kind: Service
+          port: {{ .Values.service.port }}
+          weight: 1
+    {{- end }}
     - matches:
         {{- with .Values.httpRoute.matches }}
         {{- toYaml . | nindent 8 }}
