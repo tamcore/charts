@@ -192,6 +192,28 @@ entries:
     urls:
     - https://github.com/tamcore/charts/releases/download/eufy-security-ws-0.1.0/eufy-security-ws-0.1.0.tgz
     version: 0.1.0
+  lunasea-web:
+  - apiVersion: v2
+    appVersion: 0.4.0
+    created: "2026-07-01T10:18:58.50931444Z"
+    description: Self-hosted web build of LunaSea — a controller dashboard for self-hosted
+      media software (Radarr, Sonarr, Lidarr, SABnzbd, NZBGet, Tautulli, ...).
+    digest: cee65a89887ffbb6a42ef4ff6ec2494933c0fb9d5b7db4afda2952d3a977b166
+    home: https://github.com/alysson-souza/lunasea-web
+    keywords:
+    - lunasea
+    - media
+    - dashboard
+    - radarr
+    - sonarr
+    - self-hosted
+    name: lunasea-web
+    sources:
+    - https://github.com/alysson-souza/lunasea-web
+    type: application
+    urls:
+    - https://github.com/tamcore/charts/releases/download/lunasea-web-0.1.0/lunasea-web-0.1.0.tgz
+    version: 0.1.0
   mautrix-facebook:
   - apiVersion: v2
     appVersion: v0.5.1
@@ -2717,4 +2739,4 @@ entries:
     urls:
     - https://github.com/tamcore/charts/releases/download/redis-ha-5.0.0/redis-ha-5.0.0.tgz
     version: 5.0.0
-generated: "2026-06-26T07:45:11.215858401Z"
+generated: "2026-07-01T10:18:58.509711074Z"
