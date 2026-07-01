@@ -1,0 +1,53 @@
+{{- if .Values.networkPolicy.enabled }}
+{{- $root := . }}
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: {{ include "lunasea-web.fullname" . }}
+  labels:
+    {{- include "lunasea-web.labels" . | nindent 4 }}
+    {{- with .Values.networkPolicy.labels }}
+    {{- toYaml . | nindent 4 }}
+    {{- end }}
+  {{- with .Values.networkPolicy.annotations }}
+  annotations:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
+spec:
+  podSelector:
+    matchLabels:
+      {{- include "lunasea-web.selectorLabels" . | nindent 6 }}
+  policyTypes:
+    - Ingress
+    - Egress
+  ingress:
+    # When ingressRules is empty, no ingress is permitted (default-deny).
+    {{- range .Values.networkPolicy.ingressRules }}
+    - from:
+        {{- tpl (toYaml .selectors) $root | nindent 8 }}
+      ports:
+        {{- if .ports }}
+        {{- toYaml .ports | nindent 8 }}
+        {{- else }}
+        - port: {{ $root.Values.service.targetPort }}
+          protocol: TCP
+        {{- end }}
+    {{- end }}
+  egress:
+    # DNS is always permitted so the pod can resolve backend service names.
+    - to:
+        - namespaceSelector: {}
+      ports:
+        - port: 53
+          protocol: UDP
+        - port: 53
+          protocol: TCP
+    {{- range .Values.networkPolicy.egressRules }}
+    - to:
+        {{- tpl (toYaml .selectors) $root | nindent 8 }}
+      {{- with .ports }}
+      ports:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+    {{- end }}
+{{- end }}

@@ -1,0 +1,28 @@
+LunaSea Web has been deployed.
+
+LunaSea ships no built-in authentication. NEVER expose it directly to the public
+internet — keep it behind Basic Auth (this chart wires it for Ingress and the
+NGINX Gateway Fabric HTTPRoute) or a dedicated auth proxy.
+
+{{- if .Values.ingress.enabled }}
+
+It is reachable via Ingress at:
+{{- range .Values.ingress.hosts }}
+  http{{ if $.Values.ingress.tls }}s{{ end }}://{{ .host }}/
+{{- end }}
+{{- else if .Values.httpRoute.enabled }}
+
+It is reachable via the Gateway API HTTPRoute at:
+{{- range .Values.httpRoute.hostnames }}
+  https://{{ . }}/
+{{- end }}
+{{- else }}
+
+Get the application URL by running:
+  kubectl --namespace {{ .Release.Namespace }} port-forward svc/{{ include "lunasea-web.fullname" . }} 8080:{{ .Values.service.port }}
+  # then open http://127.0.0.1:8080/
+{{- end }}
+{{- if .Values.basicAuth.enabled }}
+
+Basic Auth is ENABLED (realm: {{ .Values.basicAuth.realm }}).
+{{- end }}

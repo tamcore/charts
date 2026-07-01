@@ -1,0 +1,249 @@
+# -- Number of replicas. LunaSea stores config in a single RWO SQLite volume, so
+# this should stay at 1 unless you provide ReadWriteMany storage.
+replicaCount: 1
+
+image:
+  # -- Image repository
+  repository: ghcr.io/alysson-souza/lunasea-web
+  # -- Image tag. Defaults to the chart appVersion when empty.
+  tag: ""
+  # -- Image pull policy
+  pullPolicy: IfNotPresent
+
+# -- Secrets for pulling the image from a private registry
+imagePullSecrets: []
+
+# -- Override the chart name
+nameOverride: ""
+# -- Override the fully qualified app name
+fullnameOverride: ""
+
+serviceAccount:
+  # -- Create a dedicated ServiceAccount
+  create: true
+  # -- Name of the ServiceAccount to use (generated if empty and create is true)
+  name: ""
+  # -- Annotations for the ServiceAccount
+  annotations: {}
+
+# -- Extra labels for the pod
+podLabels: {}
+# -- Extra annotations for the pod
+podAnnotations: {}
+
+# -- Pod-level security context. Matches the image's non-root user (65532).
+podSecurityContext:
+  runAsNonRoot: true
+  runAsUser: 65532
+  runAsGroup: 65532
+  fsGroup: 65532
+  seccompProfile:
+    type: RuntimeDefault
+
+# -- Container-level security context. The image runs read-only by design; the
+# chart mounts writable /tmp and the persistent /data volume.
+securityContext:
+  readOnlyRootFilesystem: true
+  allowPrivilegeEscalation: false
+  capabilities:
+    drop:
+      - ALL
+
+service:
+  # -- Service type
+  type: ClusterIP
+  # -- Service port
+  port: 8080
+  # -- Container port the application listens on (sets LUNASEA_ADDR)
+  targetPort: 8080
+  # -- Additional annotations for the Service
+  annotations: {}
+
+persistence:
+  # -- Enable persistence for /data (SQLite database with all configuration).
+  # When disabled, an emptyDir is used and configuration is lost on pod restart.
+  enabled: true
+  # -- Access mode for the PVC
+  accessMode: ReadWriteOnce
+  # -- Use an existing PVC instead of provisioning one
+  existingClaim: ""
+  # -- Mount path for persistent data (sets LUNASEA_DATA_DIR)
+  mountPath: /data
+  # -- Subpath within the volume to mount
+  subPath: ""
+  ## Persistent Volume Storage Class
+  ## If defined, storageClassName: <storageClass>
+  ## If set to "-", storageClassName: "", which disables dynamic provisioning
+  ## If undefined (the default), no storageClassName is set, choosing the default provisioner.
+  # storageClass: "-"
+  # -- Size of the persistent volume
+  size: 1Gi
+  # -- Extra labels for the PVC
+  labels: {}
+  # -- Extra annotations for the PVC
+  annotations: {}
+
+resources: {}
+  # We usually recommend not specifying default resources and leaving this as a
+  # conscious choice for the user. Uncomment and tune for your environment:
+  # limits:
+  #   cpu: 500m
+  #   memory: 256Mi
+  # requests:
+  #   cpu: 50m
+  #   memory: 64Mi
+
+# -- Startup probe. The app serves index.html on / with a 200.
+startupProbe:
+  httpGet:
+    path: /
+    port: http
+  failureThreshold: 30
+  periodSeconds: 5
+# -- Liveness probe
+livenessProbe:
+  httpGet:
+    path: /
+    port: http
+  initialDelaySeconds: 5
+  periodSeconds: 15
+# -- Readiness probe
+readinessProbe:
+  httpGet:
+    path: /
+    port: http
+  initialDelaySeconds: 3
+  periodSeconds: 10
+
+# -- Extra environment variables for the container
+extraEnv: []
+  # - name: LUNASEA_STATIC_DIR
+  #   value: /usr/share/lunasea/web
+
+# -- Additional volumes for the pod
+extraVolumes: []
+# -- Additional volume mounts for the container
+extraVolumeMounts: []
+
+# -- Node selector for pod scheduling
+nodeSelector: {}
+# -- Tolerations for pod scheduling
+tolerations: []
+# -- Affinity rules for pod scheduling
+affinity: {}
+# -- Topology spread constraints
+topologySpreadConstraints: []
+
+# Basic Auth — shared by both Ingress and the HTTPRoute AuthenticationFilter.
+# LunaSea has no built-in auth, so enabling this is strongly recommended for any
+# externally reachable deployment.
+basicAuth:
+  # -- Enable HTTP Basic Auth
+  enabled: false
+  # -- Authentication realm
+  realm: LunaSea
+  # -- Use an existing secret. It MUST contain an htpasswd payload under the key
+  # "auth" (read by both ingress-nginx and the NGINX Gateway Fabric
+  # AuthenticationFilter). When set, the chart does not create a secret.
+  existingSecret: ""
+  # -- htpasswd payload used to create the secret when existingSecret is empty.
+  # Generate with: htpasswd -nbB <user> <pass>
+  htpasswd: ""
+
+ingress:
+  # -- Enable Ingress record generation
+  enabled: false
+  # -- IngressClass that will be used
+  className: ""
+  # -- Additional annotations for the Ingress (auth-* annotations are added
+  # automatically when basicAuth.enabled is true)
+  annotations: {}
+  # -- Ingress hosts
+  hosts:
+    - host: chart-example.local
+      paths:
+        - path: /
+          pathType: Prefix
+  # -- Ingress TLS configuration
+  tls: []
+  #  - secretName: chart-example-tls
+  #    hosts:
+  #      - chart-example.local
+
+# Gateway API HTTPRoute — alternative to Ingress for clusters running
+# NGINX Gateway Fabric (or another Gateway API implementation). When
+# basicAuth.enabled is true, an AuthenticationFilter is attached as an
+# ExtensionRef filter (NGINX Gateway Fabric specific).
+httpRoute:
+  # -- Enable HTTPRoute generation
+  enabled: false
+  # -- Gateways this route attaches to
+  parentRefs: []
+  #  - name: nginx-gateway
+  #    namespace: nginx-gateway
+  # -- Hostnames for the route
+  hostnames: []
+  #  - lunasea.example.com
+  # -- Path matches (defaults to PathPrefix "/" when empty)
+  matches: []
+  # -- Additional HTTPRoute filters appended after the auth filter
+  extraFilters: []
+  # -- Serve the LunaSea PWA manifest + icons without the basic-auth
+  # AuthenticationFilter (only applies when basicAuth.enabled). The OS fetches
+  # these without credentials when adding the site to the home screen, so
+  # otherwise the home-screen icon is blank. The exact asset paths are built
+  # into the chart template — no need to enumerate them.
+  bypassAuthForPWA: true
+  # -- Extra PathPrefix matches served WITHOUT basic auth (in addition to the
+  # built-in PWA assets). PathPrefix matches per path segment.
+  publicPathPrefixes: []
+  # -- Extra Exact paths served WITHOUT basic auth (in addition to the built-in
+  # PWA assets).
+  publicPaths: []
+
+# NetworkPolicy — restrict pod traffic. Requires a CNI/controller that enforces
+# NetworkPolicies (k3s bundled kube-router, Calico, Cilium, ...). When enabled,
+# DNS egress (port 53) is always permitted; everything else is denied unless
+# listed below. lunasea-web's gateway only ever talks to the backends you
+# configure (Radarr/Sonarr/SABnzbd/...) — it makes no direct internet requests —
+# so a backends-only egress allowlist is sufficient.
+networkPolicy:
+  # -- Create a NetworkPolicy for the pod
+  enabled: false
+  # -- Extra annotations for the NetworkPolicy
+  annotations: {}
+  # -- Extra labels for the NetworkPolicy
+  labels: {}
+  # -- Ingress allowlist. Each entry has `selectors` (a list of NetworkPolicy
+  # peers, templated) and optional `ports` (defaults to service.targetPort).
+  # Empty means no ingress is allowed.
+  ingressRules: []
+    # - selectors:
+    #     - namespaceSelector:
+    #         matchLabels:
+    #           kubernetes.io/metadata.name: nginx-gateway
+    #   ports:
+    #     - port: 8080
+    #       protocol: TCP
+  # -- Egress allowlist. Each entry has `selectors` and optional `ports`.
+  # DNS (port 53) is always permitted automatically.
+  egressRules: []
+    # - selectors:
+    #     - namespaceSelector:
+    #         matchLabels:
+    #           kubernetes.io/metadata.name: media
+    #       podSelector:
+    #         matchLabels:
+    #           app.kubernetes.io/name: radarr
+    #   ports:
+    #     - port: 7878
+    #       protocol: TCP
+
+tests:
+  image:
+    # -- Image used by the helm test connection pod
+    repository: busybox
+    # -- Image tag for the test pod
+    tag: "1.37"
+    # -- Pull policy for the test pod image
+    pullPolicy: IfNotPresent

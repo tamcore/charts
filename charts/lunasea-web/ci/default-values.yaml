@@ -1,0 +1,3 @@
+# Minimal install path for `ct install` in KinD: no dynamic storage assumptions.
+persistence:
+  enabled: false
