@@ -244,6 +244,6 @@ tests:
     # -- Image used by the helm test connection pod
     repository: busybox
     # -- Image tag for the test pod
-    tag: "1.37"
+    tag: "1.38"
     # -- Pull policy for the test pod image
     pullPolicy: IfNotPresent
