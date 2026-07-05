@@ -60,3 +60,28 @@ Create the name of the service account to use
 {{- default "default" .Values.serviceAccount.name }}
 {{- end }}
 {{- end }}
+
+{{/*
+Secret name for configEnv — existingSecret if set, otherwise the chart-managed secret.
+*/}}
+{{- define "mautrix-telegram.configEnv.secretName" -}}
+{{- if .Values.configEnv.existingSecret -}}
+{{- .Values.configEnv.existingSecret -}}
+{{- else -}}
+{{- include "mautrix-telegram.fullname" . }}-config-env
+{{- end -}}
+{{- end -}}
+
+{{/*
+Validate configEnv at render time to give clear error messages on misconfiguration.
+*/}}
+{{- define "mautrix-telegram.configEnv.validate" -}}
+{{- if .Values.configEnv.enabled -}}
+  {{- if and (not .Values.configEnv.existingSecret) (not .Values.configEnv.secretEnv) -}}
+    {{- fail "mautrix-telegram: configEnv.enabled requires either configEnv.existingSecret or configEnv.secretEnv" -}}
+  {{- end -}}
+  {{- if not .Values.configEnv.variables -}}
+    {{- fail "mautrix-telegram: configEnv.enabled requires configEnv.variables to be non-empty" -}}
+  {{- end -}}
+{{- end -}}
+{{- end -}}

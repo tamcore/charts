@@ -1,5 +1,38 @@
-livenessProbe: null
+config:
+  appservice:
+    database: "sqlite:////tmp/bridge-ci.db"
+    hostname: "0.0.0.0"
+    port: 29330
+    address: "http://localhost:29330"
+    id: mautrix-instagram-ci
+    bot_username: instagrambot
+    as_token: "ci-instagram-as-placeholder"
+    hs_token: "ci-instagram-hs-placeholder"
+  homeserver:
+    address: "http://localhost:8008"
+    domain: "localhost"
+    software: standard
+
+registration:
+  id: mautrix-instagram-ci
+  url: "http://localhost:29330"
+  as_token: "ci-instagram-as-placeholder"
+  hs_token: "ci-instagram-hs-placeholder"
+  sender_localpart: instagrambot
+  namespaces:
+    users:
+      - exclusive: true
+        regex: "@instagram_.*:localhost"
+    aliases: []
+    rooms: []
+  rate_limited: false
+
 readinessProbe: null
 
-command: ["/bin/sh", "-c"]
-args: ["sleep 3600"]
+livenessProbe:
+  httpGet:
+    path: /_matrix/mau/live
+    port: http
+  initialDelaySeconds: 20
+  periodSeconds: 10
+  failureThreshold: 3

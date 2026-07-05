@@ -1,0 +1,42 @@
+fullnameOverride: mautrix-meta
+
+configEnv:
+  enabled: true
+  variables:
+    - POSTGRES_URI
+  secretEnv:
+    POSTGRES_URI: "postgres://bridge:bridgepw@postgres.matrix-ci.svc.cluster.local:5432/mautrix_meta?sslmode=disable"
+
+config:
+  homeserver:
+    address: "http://synapse.matrix-ci.svc.cluster.local:8008"
+    domain: "ci.local"
+  appservice:
+    id: mautrix-meta
+    bot:
+      username: metabot
+    address: "http://mautrix-meta.matrix-ci.svc.cluster.local"
+    hostname: 0.0.0.0
+    port: 29319
+    as_token: "ci-meta-as-0000000000000000000000000001"
+    hs_token: "ci-meta-hs-0000000000000000000000000001"
+  database:
+    type: postgres
+    uri: "$POSTGRES_URI"
+  bridge:
+    permissions:
+      "ci.local": admin
+
+registration:
+  id: mautrix-meta
+  url: "http://mautrix-meta.matrix-ci.svc.cluster.local"
+  as_token: "ci-meta-as-0000000000000000000000000001"
+  hs_token: "ci-meta-hs-0000000000000000000000000001"
+  sender_localpart: metabot
+  namespaces:
+    users:
+      - exclusive: true
+        regex: "@meta_.*:ci.local"
+    aliases: []
+    rooms: []
+  rate_limited: false

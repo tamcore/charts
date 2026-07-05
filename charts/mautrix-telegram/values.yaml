@@ -98,7 +98,7 @@ livenessProbe:
 
 readinessProbe:
   httpGet:
-    path: /_matrix/mau/live
+    path: /_matrix/mau/ready
     port: http
 
 config: {}
@@ -125,3 +125,19 @@ registration: {}
   # # can be any random string
   # sender_localpart: ""
   # rate_limited: false
+
+# Substitute values from a Secret into config.yaml before the bridge starts.
+# Keep secrets (Postgres URI, tokens, ...) OUT of the plaintext ConfigMap: put
+# placeholders like $POSTGRES_URI in `config` and supply the real values here.
+# Fully opt-in — when disabled the config init container behaves exactly as before.
+configEnv:
+  enabled: false
+  # Placeholder names substituted in config.yaml. Reference as $NAME in `config`.
+  # ONLY these names are replaced — other $ signs ($UID, regex, etc.) are untouched.
+  variables: []
+  #   - POSTGRES_URI
+  # Bring your own Secret (keys must match `variables`).
+  existingSecret: ""
+  # OR let the chart create a Secret from this map (keys must match `variables`).
+  secretEnv: {}
+  #   POSTGRES_URI: "postgres://user:pass@host:5432/db?sslmode=disable"

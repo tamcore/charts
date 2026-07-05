@@ -1,0 +1,75 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: synapse-registrations
+  namespace: matrix-ci
+data:
+  telegram.yaml: |
+    id: mautrix-telegram
+    url: http://mautrix-telegram.matrix-ci.svc.cluster.local
+    as_token: ci-telegram-as-0000000000000000000000001
+    hs_token: ci-telegram-hs-0000000000000000000000001
+    sender_localpart: telegrambot
+    namespaces:
+      users:
+        - exclusive: true
+          regex: "@telegram_.*:ci.local"
+      aliases: []
+      rooms: []
+    rate_limited: false
+
+  whatsapp.yaml: |
+    id: mautrix-whatsapp
+    url: http://mautrix-whatsapp.matrix-ci.svc.cluster.local
+    as_token: ci-whatsapp-as-000000000000000000000001
+    hs_token: ci-whatsapp-hs-000000000000000000000001
+    sender_localpart: whatsappbot
+    namespaces:
+      users:
+        - exclusive: true
+          regex: "@whatsapp_.*:ci.local"
+      aliases: []
+      rooms: []
+    rate_limited: false
+
+  meta.yaml: |
+    id: mautrix-meta
+    url: http://mautrix-meta.matrix-ci.svc.cluster.local
+    as_token: ci-meta-as-0000000000000000000000000001
+    hs_token: ci-meta-hs-0000000000000000000000000001
+    sender_localpart: metabot
+    namespaces:
+      users:
+        - exclusive: true
+          regex: "@meta_.*:ci.local"
+      aliases: []
+      rooms: []
+    rate_limited: false
+
+  facebook.yaml: |
+    id: mautrix-facebook
+    url: http://mautrix-facebook.matrix-ci.svc.cluster.local
+    as_token: ci-facebook-as-00000000000000000000000001
+    hs_token: ci-facebook-hs-00000000000000000000000001
+    sender_localpart: facebookbot
+    namespaces:
+      users:
+        - exclusive: true
+          regex: "@facebook_.*:ci.local"
+      aliases: []
+      rooms: []
+    rate_limited: false
+
+  instagram.yaml: |
+    id: mautrix-instagram
+    url: http://mautrix-instagram.matrix-ci.svc.cluster.local
+    as_token: ci-instagram-as-0000000000000000000000001
+    hs_token: ci-instagram-hs-0000000000000000000000001
+    sender_localpart: instagrambot
+    namespaces:
+      users:
+        - exclusive: true
+          regex: "@instagram_.*:ci.local"
+      aliases: []
+      rooms: []
+    rate_limited: false

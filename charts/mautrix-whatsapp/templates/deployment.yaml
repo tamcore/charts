@@ -16,6 +16,9 @@ spec:
       annotations:
         checksum/configmap: {{ include (print $.Template.BasePath "/configmap.yaml") . | sha256sum }}
         checksum/secret: {{ include (print $.Template.BasePath "/secret.yaml") . | sha256sum }}
+        {{- if and .Values.configEnv.enabled .Values.configEnv.secretEnv (not .Values.configEnv.existingSecret) }}
+        checksum/secret-config-env: {{ include (print $.Template.BasePath "/secret-config-env.yaml") . | sha256sum }}
+        {{- end }}
       {{- with .Values.podAnnotations }}
         {{- toYaml . | nindent 8 }}
       {{- end }}
@@ -46,12 +49,23 @@ spec:
             runAsGroup: 0
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
           imagePullPolicy: {{ .Values.image.pullPolicy }}
+          {{- if .Values.configEnv.enabled }}
+          envFrom:
+            - secretRef:
+                name: {{ include "mautrix-whatsapp.configEnv.secretName" . }}
+          {{- end }}
           command: [ "/bin/bash" ]
           args:
             - -xc
             - |
               cp -v /config/config.yaml /data
               cp -v /registration/registration.yaml /data
+              {{- if .Values.configEnv.enabled }}
+              {{- range .Values.configEnv.variables }}
+              esc=$(printf '%s' "${{ . }}" | sed -e 's/[\\/&]/\\&/g')
+              sed -i "s/[$]{{ . }}/$esc/g" /data/config.yaml
+              {{- end }}
+              {{- end }}
               chown -v $UID:$GUID /data/*.yaml
           volumeMounts:
             - name: data

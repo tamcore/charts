@@ -1,5 +1,47 @@
-livenessProbe: null
+# Real liveness-only startup for `ct install` (random namespace, no synapse reachable).
+# Proves the bridge boots + stays live on /_matrix/mau/live. Readiness (registration)
+# is exercised separately by the integration-test job against a real synapse.
+config:
+  database:
+    type: sqlite3-fk-wal
+    uri: "file:/tmp/bridge-ci.db?_txlock=immediate"
+  homeserver:
+    address: "http://localhost:8008"
+    domain: "localhost"
+  appservice:
+    id: mautrix-meta-ci
+    bot:
+      username: metabot
+    address: "http://localhost:29319"
+    # Bind on all interfaces so the kubelet liveness probe can reach the port.
+    hostname: 0.0.0.0
+    port: 29319
+    as_token: "ci-meta-as-placeholder"
+    hs_token: "ci-meta-hs-placeholder"
+  bridge:
+    permissions:
+      "localhost": admin
+
+registration:
+  id: mautrix-meta-ci
+  url: "http://localhost:29319"
+  as_token: "ci-meta-as-placeholder"
+  hs_token: "ci-meta-hs-placeholder"
+  sender_localpart: metabot
+  namespaces:
+    users:
+      - exclusive: true
+        regex: "@meta_.*:localhost"
+    aliases: []
+    rooms: []
+  rate_limited: false
+
 readinessProbe: null
 
-command: ["/bin/sh", "-c"]
-args: ["sleep 3600"]
+livenessProbe:
+  httpGet:
+    path: /_matrix/mau/live
+    port: http
+  initialDelaySeconds: 20
+  periodSeconds: 10
+  failureThreshold: 3

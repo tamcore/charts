@@ -104,3 +104,91 @@ jobs:
             --config .ct.yaml \
             --debug \
             ${{github.event_name == 'workflow_dispatch' && '--all'}} ;
+
+  integration-test:
+    runs-on: ubuntu-24.04
+    needs: [get-k8s-versions]
+
+    strategy:
+      fail-fast: false
+
+      matrix:
+        k8s_version: ${{ fromJson(needs.get-k8s-versions.outputs.versions) }}
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7
+        with:
+          fetch-depth: 0
+
+      - name: Set up Helm
+        uses: azure/setup-helm@9bc31f4ebc9c6b171d7bfbaa5d006ae7abdb4310 # v5
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Detect bridge-related changes
+        id: detect-changes
+        run: |
+          if [[ "${{ github.event_name }}" == "workflow_dispatch" ]]; then
+            echo "changed=true" >> $GITHUB_OUTPUT
+          else
+            base="${{ github.event.pull_request.base.sha }}"
+            head="${{ github.event.pull_request.head.sha }}"
+            changed=$(git diff --name-only "$base" "$head" | grep -E '^(charts/mautrix-[^/]+|test/integration)/' || true)
+            if [[ -n "$changed" ]]; then
+              echo "changed=true" >> $GITHUB_OUTPUT
+            else
+              echo "changed=false" >> $GITHUB_OUTPUT
+            fi
+          fi
+
+      - if: steps.detect-changes.outputs.changed == 'true'
+        name: Create kind cluster
+        uses: helm/kind-action@ef37e7f390d99f746eb8b610417061a60e82a6cc # v1.14.0
+        with:
+          node_image: "kindest/node:${{ matrix.k8s_version }}"
+          config: .kind-config.yaml
+
+      - if: steps.detect-changes.outputs.changed == 'true'
+        name: Apply test infrastructure
+        run: kubectl apply -k test/integration
+
+      - if: steps.detect-changes.outputs.changed == 'true'
+        name: Wait for postgres
+        run: kubectl -n matrix-ci rollout status deployment/postgres --timeout=120s
+
+      - if: steps.detect-changes.outputs.changed == 'true'
+        name: Wait for synapse
+        run: kubectl -n matrix-ci rollout status deployment/synapse --timeout=300s
+
+      - if: steps.detect-changes.outputs.changed == 'true'
+        name: Install all bridges
+        run: |
+          for bridge in telegram whatsapp meta facebook instagram; do
+            helm upgrade --install mautrix-$bridge charts/mautrix-$bridge \
+              --namespace matrix-ci --create-namespace \
+              -f test/integration/bridges/_shared.values.yaml \
+              -f test/integration/bridges/$bridge.values.yaml \
+              --wait=false
+          done
+
+      - if: steps.detect-changes.outputs.changed == 'true'
+        name: Wait for all bridges Ready
+        run: |
+          for bridge in telegram whatsapp meta facebook instagram; do
+            kubectl -n matrix-ci wait --for=condition=Ready pod \
+              -l app.kubernetes.io/instance=mautrix-$bridge \
+              --timeout=180s
+          done
+
+      - if: always()
+        name: Collect diagnostics
+        run: |
+          kubectl -n matrix-ci get pods -o wide || true
+          kubectl -n matrix-ci get events --sort-by=.lastTimestamp | tail -40 || true
+          for bridge in telegram whatsapp meta facebook instagram; do
+            echo "=== mautrix-$bridge logs ==="
+            kubectl -n matrix-ci logs -l app.kubernetes.io/instance=mautrix-$bridge --all-containers --ignore-errors=true --tail=50 || true
+          done
+          echo "=== synapse logs ==="
+          kubectl -n matrix-ci logs deployment/synapse --tail=50 || true

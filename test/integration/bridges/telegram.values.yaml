@@ -1,0 +1,45 @@
+fullnameOverride: mautrix-telegram
+
+configEnv:
+  enabled: true
+  variables:
+    - POSTGRES_URI
+  secretEnv:
+    POSTGRES_URI: "postgres://bridge:bridgepw@postgres.matrix-ci.svc.cluster.local:5432/mautrix_telegram?sslmode=disable"
+
+config:
+  homeserver:
+    address: "http://synapse.matrix-ci.svc.cluster.local:8008"
+    domain: "ci.local"
+  appservice:
+    id: mautrix-telegram
+    bot:
+      username: telegrambot
+    address: "http://mautrix-telegram.matrix-ci.svc.cluster.local"
+    hostname: 0.0.0.0
+    port: 29318
+    as_token: "ci-telegram-as-0000000000000000000000001"
+    hs_token: "ci-telegram-hs-0000000000000000000000001"
+  database:
+    type: postgres
+    uri: "$POSTGRES_URI"
+  bridge:
+    permissions:
+      "ci.local": admin
+  network:
+    api_id: 12345
+    api_hash: "deadbeef0000000000000000000000a0"
+
+registration:
+  id: mautrix-telegram
+  url: "http://mautrix-telegram.matrix-ci.svc.cluster.local"
+  as_token: "ci-telegram-as-0000000000000000000000001"
+  hs_token: "ci-telegram-hs-0000000000000000000000001"
+  sender_localpart: telegrambot
+  namespaces:
+    users:
+      - exclusive: true
+        regex: "@telegram_.*:ci.local"
+    aliases: []
+    rooms: []
+  rate_limited: false

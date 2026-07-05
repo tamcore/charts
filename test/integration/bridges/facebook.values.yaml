@@ -1,0 +1,37 @@
+fullnameOverride: mautrix-facebook
+
+configEnv:
+  enabled: true
+  variables:
+    - POSTGRES_URI
+  secretEnv:
+    POSTGRES_URI: "postgres://bridge:bridgepw@postgres.matrix-ci.svc.cluster.local:5432/mautrix_facebook?sslmode=disable"
+
+config:
+  homeserver:
+    address: "http://synapse.matrix-ci.svc.cluster.local:8008"
+    domain: "ci.local"
+    software: standard
+  appservice:
+    database: "$POSTGRES_URI"
+    hostname: "0.0.0.0"
+    port: 29319
+    address: "http://mautrix-facebook.matrix-ci.svc.cluster.local"
+    id: mautrix-facebook
+    bot_username: facebookbot
+    as_token: "ci-facebook-as-00000000000000000000000001"
+    hs_token: "ci-facebook-hs-00000000000000000000000001"
+
+registration:
+  id: mautrix-facebook
+  url: "http://mautrix-facebook.matrix-ci.svc.cluster.local"
+  as_token: "ci-facebook-as-00000000000000000000000001"
+  hs_token: "ci-facebook-hs-00000000000000000000000001"
+  sender_localpart: facebookbot
+  namespaces:
+    users:
+      - exclusive: true
+        regex: "@facebook_.*:ci.local"
+    aliases: []
+    rooms: []
+  rate_limited: false
