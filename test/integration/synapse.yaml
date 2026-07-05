@@ -1,0 +1,93 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: synapse
+  namespace: matrix-ci
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: synapse
+  template:
+    metadata:
+      labels:
+        app: synapse
+    spec:
+      initContainers:
+        - name: generate-keys
+          image: matrixdotorg/synapse:v1.124.0
+          command:
+            - python
+            - -m
+            - synapse.app.homeserver
+            - --config-path
+            - /config/homeserver.yaml
+            - --generate-keys
+          volumeMounts:
+            - name: config
+              mountPath: /config
+            - name: data
+              mountPath: /data
+            - name: registrations
+              mountPath: /registrations
+      containers:
+        - name: synapse
+          image: matrixdotorg/synapse:v1.124.0
+          command:
+            - python
+            - -m
+            - synapse.app.homeserver
+            - --config-path
+            - /config/homeserver.yaml
+          ports:
+            - containerPort: 8008
+          readinessProbe:
+            httpGet:
+              path: /_matrix/client/versions
+              port: 8008
+            initialDelaySeconds: 30
+            periodSeconds: 10
+            failureThreshold: 18
+          livenessProbe:
+            httpGet:
+              path: /_matrix/client/versions
+              port: 8008
+            initialDelaySeconds: 30
+            periodSeconds: 10
+            failureThreshold: 6
+          resources:
+            requests:
+              cpu: 200m
+              memory: 512Mi
+            limits:
+              cpu: "1"
+              memory: 1Gi
+          volumeMounts:
+            - name: config
+              mountPath: /config
+            - name: data
+              mountPath: /data
+            - name: registrations
+              mountPath: /registrations
+      volumes:
+        - name: config
+          configMap:
+            name: synapse-config
+        - name: data
+          emptyDir: {}
+        - name: registrations
+          configMap:
+            name: synapse-registrations
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: synapse
+  namespace: matrix-ci
+spec:
+  type: ClusterIP
+  selector:
+    app: synapse
+  ports:
+    - port: 8008
+      targetPort: 8008

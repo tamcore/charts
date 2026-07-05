@@ -1,0 +1,35 @@
+fullnameOverride: mautrix-instagram
+
+configEnv:
+  enabled: true
+  variables:
+    - POSTGRES_URI
+  secretEnv:
+    POSTGRES_URI: "postgres://bridge:bridgepw@postgres.matrix-ci.svc.cluster.local:5432/mautrix_instagram?sslmode=disable"
+
+config:
+  homeserver:
+    address: "http://synapse.matrix-ci.svc.cluster.local:8008"
+    domain: "ci.local"
+    software: standard
+  appservice:
+    database: "$POSTGRES_URI"
+    hostname: "0.0.0.0"
+    port: 29330
+    address: "http://mautrix-instagram.matrix-ci.svc.cluster.local"
+    id: mautrix-instagram
+    bot_username: instagrambot
+
+registration:
+  id: mautrix-instagram
+  url: "http://mautrix-instagram.matrix-ci.svc.cluster.local"
+  as_token: "ci-instagram-as-0000000000000000000000001"
+  hs_token: "ci-instagram-hs-0000000000000000000000001"
+  sender_localpart: instagrambot
+  namespaces:
+    users:
+      - exclusive: true
+        regex: "@instagram_.*:ci.local"
+    aliases: []
+    rooms: []
+  rate_limited: false

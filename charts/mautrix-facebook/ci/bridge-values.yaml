@@ -1,5 +1,36 @@
-livenessProbe: null
+config:
+  appservice:
+    database: "sqlite:////tmp/bridge-ci.db"
+    hostname: "0.0.0.0"
+    port: 29319
+    address: "http://localhost:29319"
+    id: mautrix-facebook-ci
+    bot_username: facebookbot
+  homeserver:
+    address: "http://localhost:8008"
+    domain: "localhost"
+    software: standard
+
+registration:
+  id: mautrix-facebook-ci
+  url: "http://localhost:29319"
+  as_token: "ci-facebook-as-placeholder"
+  hs_token: "ci-facebook-hs-placeholder"
+  sender_localpart: facebookbot
+  namespaces:
+    users:
+      - exclusive: true
+        regex: "@facebook_.*:localhost"
+    aliases: []
+    rooms: []
+  rate_limited: false
+
 readinessProbe: null
 
-command: ["/bin/sh", "-c"]
-args: ["sleep 3600"]
+livenessProbe:
+  httpGet:
+    path: /_matrix/mau/live
+    port: http
+  initialDelaySeconds: 20
+  periodSeconds: 10
+  failureThreshold: 3

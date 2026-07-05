@@ -1,0 +1,36 @@
+fullnameOverride: mautrix-whatsapp
+
+configEnv:
+  enabled: true
+  variables:
+    - POSTGRES_URI
+  secretEnv:
+    POSTGRES_URI: "postgres://bridge:bridgepw@postgres.matrix-ci.svc.cluster.local:5432/mautrix_whatsapp?sslmode=disable"
+
+config:
+  homeserver:
+    address: "http://synapse.matrix-ci.svc.cluster.local:8008"
+    domain: "ci.local"
+  appservice:
+    id: mautrix-whatsapp
+    bot:
+      username: whatsappbot
+    address: "http://mautrix-whatsapp.matrix-ci.svc.cluster.local"
+    port: 29318
+  database:
+    type: postgres
+    uri: "$POSTGRES_URI"
+
+registration:
+  id: mautrix-whatsapp
+  url: "http://mautrix-whatsapp.matrix-ci.svc.cluster.local"
+  as_token: "ci-whatsapp-as-000000000000000000000001"
+  hs_token: "ci-whatsapp-hs-000000000000000000000001"
+  sender_localpart: whatsappbot
+  namespaces:
+    users:
+      - exclusive: true
+        regex: "@whatsapp_.*:ci.local"
+    aliases: []
+    rooms: []
+  rate_limited: false

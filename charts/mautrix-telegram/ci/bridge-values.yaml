@@ -1,5 +1,40 @@
-livenessProbe: null
+config:
+  database:
+    type: sqlite3-fk-wal
+    uri: "file:/tmp/bridge-ci.db?_txlock=immediate"
+  homeserver:
+    address: "http://localhost:8008"
+    domain: "localhost"
+  appservice:
+    id: mautrix-telegram-ci
+    bot:
+      username: telegrambot
+    address: "http://localhost:29318"
+    port: 29318
+  telegram:
+    api_id: 12345
+    api_hash: "deadbeef0000000000000000000000a0"
+
+registration:
+  id: mautrix-telegram-ci
+  url: "http://localhost:29318"
+  as_token: "ci-telegram-as-placeholder"
+  hs_token: "ci-telegram-hs-placeholder"
+  sender_localpart: telegrambot
+  namespaces:
+    users:
+      - exclusive: true
+        regex: "@telegram_.*:localhost"
+    aliases: []
+    rooms: []
+  rate_limited: false
+
 readinessProbe: null
 
-command: ["/bin/sh", "-c"]
-args: ["sleep 3600"]
+livenessProbe:
+  httpGet:
+    path: /_matrix/mau/live
+    port: http
+  initialDelaySeconds: 20
+  periodSeconds: 10
+  failureThreshold: 3

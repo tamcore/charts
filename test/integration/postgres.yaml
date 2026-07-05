@@ -1,0 +1,77 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: postgres-initdb
+  namespace: matrix-ci
+data:
+  init.sql: |
+    CREATE USER bridge WITH PASSWORD 'bridgepw';
+    CREATE DATABASE mautrix_telegram OWNER bridge;
+    CREATE DATABASE mautrix_whatsapp OWNER bridge;
+    CREATE DATABASE mautrix_meta OWNER bridge;
+    CREATE DATABASE mautrix_facebook OWNER bridge;
+    CREATE DATABASE mautrix_instagram OWNER bridge;
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: postgres
+  namespace: matrix-ci
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: postgres
+  template:
+    metadata:
+      labels:
+        app: postgres
+    spec:
+      containers:
+        - name: postgres
+          image: postgres:17-alpine
+          env:
+            - name: POSTGRES_USER
+              value: bridge
+            - name: POSTGRES_PASSWORD
+              value: bridgepw
+            - name: POSTGRES_DB
+              value: bridge
+          ports:
+            - containerPort: 5432
+          readinessProbe:
+            exec:
+              command:
+                - pg_isready
+                - -U
+                - bridge
+            initialDelaySeconds: 5
+            periodSeconds: 5
+            failureThreshold: 6
+          resources:
+            requests:
+              cpu: 100m
+              memory: 256Mi
+            limits:
+              cpu: 500m
+              memory: 512Mi
+          volumeMounts:
+            - name: initdb
+              mountPath: /docker-entrypoint-initdb.d/
+      volumes:
+        - name: initdb
+          configMap:
+            name: postgres-initdb
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: postgres
+  namespace: matrix-ci
+spec:
+  type: ClusterIP
+  selector:
+    app: postgres
+  ports:
+    - port: 5432
+      targetPort: 5432
