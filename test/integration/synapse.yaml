@@ -15,7 +15,7 @@ spec:
     spec:
       initContainers:
         - name: generate-keys
-          image: matrixdotorg/synapse:v1.124.0
+          image: ghcr.io/element-hq/synapse:v1.155.0
           command:
             - python
             - -m
@@ -32,7 +32,7 @@ spec:
               mountPath: /registrations
       containers:
         - name: synapse
-          image: matrixdotorg/synapse:v1.124.0
+          image: ghcr.io/element-hq/synapse:v1.155.0
           command:
             - python
             - -m
