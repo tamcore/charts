@@ -1,3 +1,6 @@
+# Real liveness-only startup for `ct install` (random namespace, no synapse reachable).
+# Proves the bridge boots + stays live on /_matrix/mau/live. Readiness (registration)
+# is exercised separately by the integration-test job against a real synapse.
 config:
   database:
     type: sqlite3-fk-wal
@@ -10,7 +13,14 @@ config:
     bot:
       username: whatsappbot
     address: "http://localhost:29318"
+    # Bind on all interfaces so the kubelet liveness probe can reach the port.
+    hostname: 0.0.0.0
     port: 29318
+    as_token: "ci-whatsapp-as-placeholder"
+    hs_token: "ci-whatsapp-hs-placeholder"
+  bridge:
+    permissions:
+      "localhost": admin
 
 registration:
   id: mautrix-whatsapp-ci

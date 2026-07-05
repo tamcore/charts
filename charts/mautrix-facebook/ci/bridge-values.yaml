@@ -6,6 +6,8 @@ config:
     address: "http://localhost:29319"
     id: mautrix-facebook-ci
     bot_username: facebookbot
+    as_token: "ci-facebook-as-placeholder"
+    hs_token: "ci-facebook-hs-placeholder"
   homeserver:
     address: "http://localhost:8008"
     domain: "localhost"

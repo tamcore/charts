@@ -19,6 +19,8 @@ config:
     address: "http://mautrix-instagram.matrix-ci.svc.cluster.local"
     id: mautrix-instagram
     bot_username: instagrambot
+    as_token: "ci-instagram-as-0000000000000000000000001"
+    hs_token: "ci-instagram-hs-0000000000000000000000001"
 
 registration:
   id: mautrix-instagram

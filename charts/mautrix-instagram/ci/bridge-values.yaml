@@ -6,6 +6,8 @@ config:
     address: "http://localhost:29330"
     id: mautrix-instagram-ci
     bot_username: instagrambot
+    as_token: "ci-instagram-as-placeholder"
+    hs_token: "ci-instagram-hs-placeholder"
   homeserver:
     address: "http://localhost:8008"
     domain: "localhost"

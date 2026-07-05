@@ -5,7 +5,8 @@ metadata:
   namespace: matrix-ci
 data:
   init.sql: |
-    CREATE USER bridge WITH PASSWORD 'bridgepw';
+    -- The "bridge" role and "bridge" database are created automatically by the
+    -- POSTGRES_USER/POSTGRES_DB env vars; here we only add the per-bridge databases.
     CREATE DATABASE mautrix_telegram OWNER bridge;
     CREATE DATABASE mautrix_whatsapp OWNER bridge;
     CREATE DATABASE mautrix_meta OWNER bridge;

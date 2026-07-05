@@ -16,10 +16,16 @@ config:
     bot:
       username: whatsappbot
     address: "http://mautrix-whatsapp.matrix-ci.svc.cluster.local"
+    hostname: 0.0.0.0
     port: 29318
+    as_token: "ci-whatsapp-as-000000000000000000000001"
+    hs_token: "ci-whatsapp-hs-000000000000000000000001"
   database:
     type: postgres
     uri: "$POSTGRES_URI"
+  bridge:
+    permissions:
+      "ci.local": admin
 
 registration:
   id: mautrix-whatsapp

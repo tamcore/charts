@@ -19,6 +19,8 @@ config:
     address: "http://mautrix-facebook.matrix-ci.svc.cluster.local"
     id: mautrix-facebook
     bot_username: facebookbot
+    as_token: "ci-facebook-as-00000000000000000000000001"
+    hs_token: "ci-facebook-hs-00000000000000000000000001"
 
 registration:
   id: mautrix-facebook
