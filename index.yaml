@@ -217,6 +217,16 @@ entries:
   mautrix-facebook:
   - apiVersion: v2
     appVersion: v0.5.1
+    created: "2026-07-05T10:43:57.956069766Z"
+    description: A Matrix-Facebook Messenger puppeting bridge
+    digest: 6e1de32135fc5469884cab21ef6cb289be1b121fc6d9533f33e68e04832692f3
+    name: mautrix-facebook
+    type: application
+    urls:
+    - https://github.com/tamcore/charts/releases/download/mautrix-facebook-0.2.0/mautrix-facebook-0.2.0.tgz
+    version: 0.2.0
+  - apiVersion: v2
+    appVersion: v0.5.1
     created: "2023-11-04T14:56:44.746596764Z"
     description: A Matrix-Facebook Messenger puppeting bridge
     digest: 285bc36e446a2e73dfed1f6c003f2f5f4eb64eb9bef250b3bfa9a51cc9759249
@@ -316,6 +326,16 @@ entries:
     - https://github.com/tamcore/charts/releases/download/mautrix-facebook-0.0.1/mautrix-facebook-0.0.1.tgz
     version: 0.0.1
   mautrix-instagram:
+  - apiVersion: v2
+    appVersion: v0.3.1
+    created: "2026-07-05T10:43:58.067602998Z"
+    description: A Matrix-Instagram DM puppeting bridge
+    digest: 0efa6d40656e3aeb5b953d43449a19fb257715190de5e938b036a97d7727831c
+    name: mautrix-instagram
+    type: application
+    urls:
+    - https://github.com/tamcore/charts/releases/download/mautrix-instagram-0.2.0/mautrix-instagram-0.2.0.tgz
+    version: 0.2.0
   - apiVersion: v2
     appVersion: v0.3.1
     created: "2023-11-04T14:56:44.87455795Z"
@@ -427,6 +447,16 @@ entries:
     - https://github.com/tamcore/charts/releases/download/mautrix-instagram-0.0.1/mautrix-instagram-0.0.1.tgz
     version: 0.0.1
   mautrix-meta:
+  - apiVersion: v2
+    appVersion: v0.2606.0
+    created: "2026-07-05T10:43:58.213085592Z"
+    description: A Matrix-Facebook Messenger and Instagram DM puppeting bridge.
+    digest: 34e124951b49434db2c8702dba7e1a4c8159e6fce17ca29d87cc3605a95024fe
+    name: mautrix-meta
+    type: application
+    urls:
+    - https://github.com/tamcore/charts/releases/download/mautrix-meta-0.11.0/mautrix-meta-0.11.0.tgz
+    version: 0.11.0
   - apiVersion: v2
     appVersion: v0.2606.0
     created: "2026-06-16T14:13:44.713926705Z"
@@ -630,6 +660,16 @@ entries:
   mautrix-telegram:
   - apiVersion: v2
     appVersion: v0.2606.0
+    created: "2026-07-05T10:43:58.329374169Z"
+    description: A Matrix-Telegram puppeting bridge
+    digest: fe790408f855928e98eef1af6c5ff651ac61a3177bcbe000f4d8e78547e632a0
+    name: mautrix-telegram
+    type: application
+    urls:
+    - https://github.com/tamcore/charts/releases/download/mautrix-telegram-0.2.0/mautrix-telegram-0.2.0.tgz
+    version: 0.2.0
+  - apiVersion: v2
+    appVersion: v0.2606.0
     created: "2026-07-04T06:51:31.536469415Z"
     description: A Matrix-Telegram puppeting bridge
     digest: 5a3a20b2d39ad5ff6668705ce8dd2843baa4522f747fffa989985879a1b72957
@@ -639,6 +679,16 @@ entries:
     - https://github.com/tamcore/charts/releases/download/mautrix-telegram-0.1.0/mautrix-telegram-0.1.0.tgz
     version: 0.1.0
   mautrix-whatsapp:
+  - apiVersion: v2
+    appVersion: v0.2606.0
+    created: "2026-07-05T10:43:58.434110039Z"
+    description: A Matrix-WhatsApp puppeting bridge
+    digest: 49473017b6d03fe1cd4f02477ca7cc57b149d35b7a4883c8ffb43ae607e64df6
+    name: mautrix-whatsapp
+    type: application
+    urls:
+    - https://github.com/tamcore/charts/releases/download/mautrix-whatsapp-0.18.0/mautrix-whatsapp-0.18.0.tgz
+    version: 0.18.0
   - apiVersion: v2
     appVersion: v0.2606.0
     created: "2026-06-16T14:14:01.717298754Z"
@@ -2750,4 +2800,4 @@ entries:
     urls:
     - https://github.com/tamcore/charts/releases/download/redis-ha-5.0.0/redis-ha-5.0.0.tgz
     version: 5.0.0
-generated: "2026-07-04T06:51:31.53686811Z"
+generated: "2026-07-05T10:43:58.435160458Z"
