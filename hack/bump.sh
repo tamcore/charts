@@ -43,10 +43,9 @@ do
 
     if [[ "${OSTYPE}" == "darwin"* ]]
     then
-      # sed -i '' "s|${current_version}|${new_version}|" "${f}"
-      sed -i '' '/^version/ s/'${current_version}'/'${new_version}'/' ${f}
+      sed -i '' "/^version:/ s|.*|version: ${new_version}|" "${f}"
     else
-      sed -i "s|${current_version}|${new_version}|" "${f}"
+      sed -i "/^version:/ s|.*|version: ${new_version}|" "${f}"
     fi
   fi
 done
