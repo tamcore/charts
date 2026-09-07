@@ -205,6 +205,27 @@ entries:
     version: 0.1.0
   lunasea-web:
   - apiVersion: v2
+    appVersion: 0.4.1
+    created: "2026-09-07T13:22:56.973987067Z"
+    description: Self-hosted web build of LunaSea — a controller dashboard for self-hosted
+      media software (Radarr, Sonarr, Lidarr, SABnzbd, NZBGet, Tautulli, ...).
+    digest: 65b6a3c3ef365f1df58b3fc9dc6abbc3e4c06150da3eabd1faa09490d6387150
+    home: https://github.com/alysson-souza/lunasea-web
+    keywords:
+    - lunasea
+    - media
+    - dashboard
+    - radarr
+    - sonarr
+    - self-hosted
+    name: lunasea-web
+    sources:
+    - https://github.com/alysson-souza/lunasea-web
+    type: application
+    urls:
+    - https://github.com/tamcore/charts/releases/download/lunasea-web-0.1.2/lunasea-web-0.1.2.tgz
+    version: 0.1.2
+  - apiVersion: v2
     appVersion: 0.4.0
     created: "2026-07-05T10:44:26.546511079Z"
     description: Self-hosted web build of LunaSea — a controller dashboard for self-hosted
@@ -1276,6 +1297,27 @@ entries:
     - https://github.com/tamcore/charts/releases/download/mosquitto-1.0.0/mosquitto-1.0.0.tgz
     version: 1.0.0
   redis-ha:
+  - apiVersion: v2
+    appVersion: 8.10.1
+    created: "2026-09-07T13:22:57.225843827Z"
+    description: This Helm chart provides a highly available Redis implementation
+      with a master/slave configuration and uses Sentinel sidecars for failover management
+    digest: 02e84cf09e3df34975518b50f6156e99e54cf2b01fe113cf42bdf8961ff2bb9c
+    home: http://redis.io/
+    icon: https://upload.wikimedia.org/wikipedia/en/thumb/6/6b/Redis_Logo.svg/1200px-Redis_Logo.svg.png
+    keywords:
+    - redis
+    - keyvalue
+    - database
+    name: redis-ha
+    sources:
+    - https://redis.io/download
+    - https://github.com/tamcore/charts/blob/master/charts/redis-ha
+    - https://github.com/oliver006/redis_exporter
+    type: application
+    urls:
+    - https://github.com/tamcore/charts/releases/download/redis-ha-6.5.1/redis-ha-6.5.1.tgz
+    version: 6.5.1
   - apiVersion: v2
     appVersion: 8.10.0
     created: "2026-08-09T13:18:15.11313068Z"
@@ -3019,4 +3061,4 @@ entries:
     urls:
     - https://github.com/tamcore/charts/releases/download/redis-ha-5.0.0/redis-ha-5.0.0.tgz
     version: 5.0.0
-generated: "2026-08-16T18:42:53.491263897Z"
+generated: "2026-09-07T13:22:57.226413916Z"
