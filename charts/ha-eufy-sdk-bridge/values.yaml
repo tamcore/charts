@@ -51,6 +51,17 @@ env: {}
   # "STREAM_IDLE_MS": "300000"
   # ...
 
+# Environment variables rendered into a Secret owned by this chart and loaded with envFrom.
+# Credentials belong here rather than in `env`, which ends up in plain text in the rendered
+# manifest. The pod restarts when a value changes.
+secretEnv: {}
+  # "EUFY_EMAIL": "foo@bar.com"
+  # "EUFY_PASSWORD": "changeme"
+
+# Load env from a Secret that is managed outside this chart instead. Takes precedence over
+# secretEnv, which is then only rendered, not referenced.
+existingSecret: ""
+
 # This is for setting up a service more information can be found here: https://kubernetes.io/docs/concepts/services-networking/service/
 service:
   # This sets the service type more information can be found here: https://kubernetes.io/docs/concepts/services-networking/service/#publishing-services-service-types

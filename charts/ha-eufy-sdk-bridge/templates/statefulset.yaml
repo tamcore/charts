@@ -11,9 +11,14 @@ spec:
       {{- include "ha-eufy-sdk-bridge.selectorLabels" . | nindent 6 }}
   template:
     metadata:
-      {{- with .Values.podAnnotations }}
+      {{- if or .Values.secretEnv .Values.podAnnotations }}
       annotations:
+        {{- with .Values.secretEnv }}
+        checksum/secret: {{ toYaml . | sha256sum }}
+        {{- end }}
+        {{- with .Values.podAnnotations }}
         {{- toYaml . | nindent 8 }}
+        {{- end }}
       {{- end }}
       labels:
         {{- include "ha-eufy-sdk-bridge.labels" . | nindent 8 }}
@@ -76,6 +81,11 @@ spec:
               {{- toYaml $value | nindent 14 }}
               {{- end }}
             {{- end }}
+          {{- if or .Values.secretEnv .Values.existingSecret }}
+          envFrom:
+            - secretRef:
+                name: {{ .Values.existingSecret | default (include "ha-eufy-sdk-bridge.fullname" .) }}
+          {{- end }}
           volumeMounts:
             - name: data
               mountPath: {{ .Values.persistence.mountPath }}
