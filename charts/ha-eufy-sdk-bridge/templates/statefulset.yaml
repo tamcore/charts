@@ -73,7 +73,7 @@ spec:
               {{- if kindIs "string" $value }}
               value: "{{ $value }}"
               {{- else }}
-              {{- toYaml $value | nindent 12 }}
+              {{- toYaml $value | nindent 14 }}
               {{- end }}
             {{- end }}
           volumeMounts:
