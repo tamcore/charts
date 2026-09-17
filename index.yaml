@@ -203,6 +203,18 @@ entries:
     urls:
     - https://github.com/tamcore/charts/releases/download/eufy-security-ws-0.1.0/eufy-security-ws-0.1.0.tgz
     version: 0.1.0
+  ha-eufy-sdk-bridge:
+  - apiVersion: v2
+    appVersion: 0.2.0
+    created: "2026-09-17T16:33:06.005491186Z"
+    description: Daemon that logs into eufy once and exposes the eufy-sdk over WebSocket
+      + HTTP, with go2rtc bundled for RTSP/WebRTC/MSE/HLS camera streams.
+    digest: d27cdbf155828f80124458cf21f22ab221f0e25a4ee9439cc16f16b0c483b41b
+    name: ha-eufy-sdk-bridge
+    type: application
+    urls:
+    - https://github.com/tamcore/charts/releases/download/ha-eufy-sdk-bridge-1.0.0/ha-eufy-sdk-bridge-1.0.0.tgz
+    version: 1.0.0
   lunasea-web:
   - apiVersion: v2
     appVersion: 0.4.1
@@ -3132,4 +3144,4 @@ entries:
     urls:
     - https://github.com/tamcore/charts/releases/download/redis-ha-5.0.0/redis-ha-5.0.0.tgz
     version: 5.0.0
-generated: "2026-09-16T16:44:48.020587428Z"
+generated: "2026-09-17T16:33:06.005979267Z"
