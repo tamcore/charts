@@ -14,5 +14,6 @@ securityContext:
   allowPrivilegeEscalation: false
 
 env:
-  "USERNAME": "foo"
-  "PASSWORD": "bar"
+  "EUFY_EMAIL": "foo@bar.com"
+  "EUFY_PASSWORD": "bar"
+  "EUFY_COUNTRY": "DE"

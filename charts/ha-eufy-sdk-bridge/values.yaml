@@ -1,5 +1,5 @@
 image:
-  repository: bropat/eufy-security-ws
+  repository: ghcr.io/mega-yfue/ha-eufy-sdk-bridge
   # This sets the pull policy for images.
   pullPolicy: IfNotPresent
   # Overrides the image tag whose default is the chart appVersion.
@@ -42,20 +42,27 @@ securityContext: {}
   # runAsNonRoot: true
   # runAsUser: 1000
 
+# Environment variables for the bridge. Credentials belong into a Secret, referenced with
+# valueFrom, or into an externally managed values file.
 env: {}
-  # "USERNAME": "foo@bar.com"
-  # "PASSWORD": "changeme"
-  # "COUNTRY": "DE"
-  # "LANGUAGE": "en"
+  # "EUFY_EMAIL": "foo@bar.com"
+  # "EUFY_PASSWORD": "changeme"
+  # "EUFY_COUNTRY": "DE"
+  # "STREAM_IDLE_MS": "300000"
   # ...
-
 
 # This is for setting up a service more information can be found here: https://kubernetes.io/docs/concepts/services-networking/service/
 service:
   # This sets the service type more information can be found here: https://kubernetes.io/docs/concepts/services-networking/service/#publishing-services-service-types
   type: ClusterIP
-  # This sets the ports more information can be found here: https://kubernetes.io/docs/concepts/services-networking/service/#field-spec-ports
+  # WS control + HTTP stream/snapshot endpoint.
   port: 3000
+  # go2rtc endpoints. WebRTC over a ClusterIP is only usable in-cluster, because ICE
+  # advertises the pod address.
+  go2rtc:
+    api: 1984
+    rtsp: 8554
+    webrtc: 8555
 
 # This block is for setting up the ingress for more information can be found here: https://kubernetes.io/docs/concepts/services-networking/ingress/
 ingress:
@@ -87,6 +94,8 @@ resources: {}
   #   memory: 128Mi
 
 # This is to setup the liveness and readiness probes more information can be found here: https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-startup-probes/
+# The daemon serves the WS before login completes, so 2FA/captcha can be driven through it. A
+# HTTP probe on /healthz would fail during that window, hence the tcpSocket probe.
 livenessProbe:
   tcpSocket:
     port: http
@@ -94,11 +103,12 @@ readinessProbe:
   tcpSocket:
     port: http
 
+# Holds the eufy session (one session per account) and the generated go2rtc.yaml.
 persistence:
   enabled: true
   accessMode: ReadWriteOnce
   existingClaim: ""
-  mountPath: /data
+  mountPath: /app/data
   subPath: ""
   labels: {}
   ## database data Persistent Volume Storage Class

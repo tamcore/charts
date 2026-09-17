@@ -2,9 +2,9 @@
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-  name: {{ include "eufy-security-ws.fullname" . }}
+  name: {{ include "ha-eufy-sdk-bridge.fullname" . }}
   labels:
-    {{- include "eufy-security-ws.labels" . | nindent 4 }}
+    {{- include "ha-eufy-sdk-bridge.labels" . | nindent 4 }}
   {{- with .Values.ingress.annotations }}
   annotations:
     {{- toYaml . | nindent 4 }}
@@ -35,7 +35,7 @@ spec:
             {{- end }}
             backend:
               service:
-                name: {{ include "eufy-security-ws.fullname" $ }}
+                name: {{ include "ha-eufy-sdk-bridge.fullname" $ }}
                 port:
                   number: {{ $.Values.service.port }}
           {{- end }}
