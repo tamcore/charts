@@ -1,7 +1,7 @@
 {{/*
 Expand the name of the chart.
 */}}
-{{- define "eufy-security-ws.name" -}}
+{{- define "ha-eufy-sdk-bridge.name" -}}
 {{- default .Chart.Name .Values.nameOverride | trunc 63 | trimSuffix "-" }}
 {{- end }}
 
@@ -10,7 +10,7 @@ Create a default fully qualified app name.
 We truncate at 63 chars because some Kubernetes name fields are limited to this (by the DNS naming spec).
 If release name contains chart name it will be used as a full name.
 */}}
-{{- define "eufy-security-ws.fullname" -}}
+{{- define "ha-eufy-sdk-bridge.fullname" -}}
 {{- if .Values.fullnameOverride }}
 {{- .Values.fullnameOverride | trunc 63 | trimSuffix "-" }}
 {{- else }}
@@ -26,16 +26,16 @@ If release name contains chart name it will be used as a full name.
 {{/*
 Create chart name and version as used by the chart label.
 */}}
-{{- define "eufy-security-ws.chart" -}}
+{{- define "ha-eufy-sdk-bridge.chart" -}}
 {{- printf "%s-%s" .Chart.Name .Chart.Version | replace "+" "_" | trunc 63 | trimSuffix "-" }}
 {{- end }}
 
 {{/*
 Common labels
 */}}
-{{- define "eufy-security-ws.labels" -}}
-helm.sh/chart: {{ include "eufy-security-ws.chart" . }}
-{{ include "eufy-security-ws.selectorLabels" . }}
+{{- define "ha-eufy-sdk-bridge.labels" -}}
+helm.sh/chart: {{ include "ha-eufy-sdk-bridge.chart" . }}
+{{ include "ha-eufy-sdk-bridge.selectorLabels" . }}
 {{- if .Chart.AppVersion }}
 app.kubernetes.io/version: {{ .Chart.AppVersion | quote }}
 {{- end }}
@@ -45,17 +45,17 @@ app.kubernetes.io/managed-by: {{ .Release.Service }}
 {{/*
 Selector labels
 */}}
-{{- define "eufy-security-ws.selectorLabels" -}}
-app.kubernetes.io/name: {{ include "eufy-security-ws.name" . }}
+{{- define "ha-eufy-sdk-bridge.selectorLabels" -}}
+app.kubernetes.io/name: {{ include "ha-eufy-sdk-bridge.name" . }}
 app.kubernetes.io/instance: {{ .Release.Name }}
 {{- end }}
 
 {{/*
 Create the name of the service account to use
 */}}
-{{- define "eufy-security-ws.serviceAccountName" -}}
+{{- define "ha-eufy-sdk-bridge.serviceAccountName" -}}
 {{- if .Values.serviceAccount.create }}
-{{- default (include "eufy-security-ws.fullname" .) .Values.serviceAccount.name }}
+{{- default (include "ha-eufy-sdk-bridge.fullname" .) .Values.serviceAccount.name }}
 {{- else }}
 {{- default "default" .Values.serviceAccount.name }}
 {{- end }}

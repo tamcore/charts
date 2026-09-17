@@ -1,0 +1,27 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ include "ha-eufy-sdk-bridge.fullname" . }}
+  labels:
+    {{- include "ha-eufy-sdk-bridge.labels" . | nindent 4 }}
+spec:
+  type: {{ .Values.service.type }}
+  ports:
+    - port: {{ .Values.service.port }}
+      targetPort: http
+      protocol: TCP
+      name: http
+    - port: {{ .Values.service.go2rtc.api }}
+      targetPort: go2rtc-api
+      protocol: TCP
+      name: go2rtc-api
+    - port: {{ .Values.service.go2rtc.rtsp }}
+      targetPort: rtsp
+      protocol: TCP
+      name: rtsp
+    - port: {{ .Values.service.go2rtc.webrtc }}
+      targetPort: webrtc
+      protocol: UDP
+      name: webrtc
+  selector:
+    {{- include "ha-eufy-sdk-bridge.selectorLabels" . | nindent 4 }}

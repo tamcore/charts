@@ -1,14 +1,14 @@
 apiVersion: apps/v1
 kind: StatefulSet
 metadata:
-  name: {{ include "eufy-security-ws.fullname" . }}
+  name: {{ include "ha-eufy-sdk-bridge.fullname" . }}
   labels:
-    {{- include "eufy-security-ws.labels" . | nindent 4 }}
+    {{- include "ha-eufy-sdk-bridge.labels" . | nindent 4 }}
 spec:
   replicas: 1
   selector:
     matchLabels:
-      {{- include "eufy-security-ws.selectorLabels" . | nindent 6 }}
+      {{- include "ha-eufy-sdk-bridge.selectorLabels" . | nindent 6 }}
   template:
     metadata:
       {{- with .Values.podAnnotations }}
@@ -16,7 +16,7 @@ spec:
         {{- toYaml . | nindent 8 }}
       {{- end }}
       labels:
-        {{- include "eufy-security-ws.labels" . | nindent 8 }}
+        {{- include "ha-eufy-sdk-bridge.labels" . | nindent 8 }}
         {{- with .Values.podLabels }}
         {{- toYaml . | nindent 8 }}
         {{- end }}
@@ -25,7 +25,7 @@ spec:
       imagePullSecrets:
         {{- toYaml . | nindent 8 }}
       {{- end }}
-      serviceAccountName: {{ include "eufy-security-ws.serviceAccountName" . }}
+      serviceAccountName: {{ include "ha-eufy-sdk-bridge.serviceAccountName" . }}
       {{- with .Values.podSecurityContext }}
       securityContext:
         {{- toYaml . | nindent 8 }}
@@ -42,6 +42,15 @@ spec:
             - name: http
               containerPort: 3000
               protocol: TCP
+            - name: go2rtc-api
+              containerPort: 1984
+              protocol: TCP
+            - name: rtsp
+              containerPort: 8554
+              protocol: TCP
+            - name: webrtc
+              containerPort: 8555
+              protocol: UDP
           {{- with .Values.livenessProbe }}
           livenessProbe:
             {{- toYaml . | nindent 12 }}
@@ -54,9 +63,12 @@ spec:
           resources:
             {{- toYaml . | nindent 12 }}
           {{- end }}
-          {{- with .Values.env }}
           env:
-            {{- range $key, $value := . }}
+            - name: GO2RTC_CONFIG
+              value: "{{ .Values.persistence.mountPath }}/go2rtc.yaml"
+            - name: EUFY_SESSION
+              value: "{{ .Values.persistence.mountPath }}/.eufy-session.json"
+            {{- range $key, $value := .Values.env }}
             - name: "{{ $key }}"
               {{- if kindIs "string" $value }}
               value: "{{ $value }}"
@@ -64,7 +76,6 @@ spec:
               {{- toYaml $value | nindent 12 }}
               {{- end }}
             {{- end }}
-          {{- end }}
           volumeMounts:
             - name: data
               mountPath: {{ .Values.persistence.mountPath }}

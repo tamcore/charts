@@ -1,0 +1,12 @@
+apiVersion: v2
+name: ha-eufy-sdk-bridge
+description: "Daemon that logs into eufy once and exposes the eufy-sdk over WebSocket + HTTP, with go2rtc bundled for RTSP/WebRTC/MSE/HLS camera streams."
+type: application
+
+# This is the chart version. This version number should be incremented each time you make changes
+# to the chart and its templates, including the app version.
+# Versions are expected to follow Semantic Versioning (https://semver.org/)
+version: 1.0.0
+
+# renovate: datasource=github-releases depName=mega-yfue/ha-eufy-sdk-bridge
+appVersion: "0.2.0"
