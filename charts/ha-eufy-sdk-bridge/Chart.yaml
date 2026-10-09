@@ -8,5 +8,9 @@ type: application
 # Versions are expected to follow Semantic Versioning (https://semver.org/)
 version: 1.3.0
 
+# This is the version number of the application being deployed. This version number should be
+# incremented each time you make changes to the application. Versions are not expected to
+# follow Semantic Versioning. They should reflect the version the application is using.
+# It is recommended to use it with quotes.
 # renovate: datasource=github-releases depName=mega-yfue/ha-eufy-sdk-bridge
 appVersion: "0.4.0"
