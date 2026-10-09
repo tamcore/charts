@@ -205,6 +205,17 @@ entries:
     version: 0.1.0
   ha-eufy-sdk-bridge:
   - apiVersion: v2
+    appVersion: 0.4.0
+    created: "2026-10-09T13:04:27.374026313Z"
+    description: Daemon that logs into eufy once and exposes the eufy-sdk over WebSocket
+      + HTTP, with go2rtc bundled for RTSP/WebRTC/MSE/HLS camera streams.
+    digest: b0876e91ec2432906d438e2ce6d28f882b6f69dc4a1d28731dde129259fcba4c
+    name: ha-eufy-sdk-bridge
+    type: application
+    urls:
+    - https://github.com/tamcore/charts/releases/download/ha-eufy-sdk-bridge-1.3.0/ha-eufy-sdk-bridge-1.3.0.tgz
+    version: 1.3.0
+  - apiVersion: v2
     appVersion: 0.3.0
     created: "2026-09-23T21:28:07.334924139Z"
     description: Daemon that logs into eufy once and exposes the eufy-sdk over WebSocket
@@ -3292,4 +3303,4 @@ entries:
     urls:
     - https://github.com/tamcore/charts/releases/download/redis-ha-5.0.0/redis-ha-5.0.0.tgz
     version: 5.0.0
-generated: "2026-10-01T13:10:10.532543144Z"
+generated: "2026-10-09T13:04:27.374357525Z"
