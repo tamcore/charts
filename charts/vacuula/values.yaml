@@ -52,16 +52,23 @@ env: {}
   # "VACUULA_TZ": "Europe/Berlin"
 
 # This is for setting up a service more information can be found here: https://kubernetes.io/docs/concepts/services-networking/service/
-# Robots verify the app's own self-signed CA. Expose the gen3/gen4 ports at L4 (e.g. LoadBalancer)
-# without TLS termination or passthrough proxies in front.
+# Web UI + API (http port). Ingress and HTTPRoute target this Service.
 service:
   # This sets the service type more information can be found here: https://kubernetes.io/docs/concepts/services-networking/service/#publishing-services-service-types
   type: ClusterIP
   annotations: {}
+  port: 80
+
+# Robot endpoints (gen3/gen4), rendered as <fullname>-robots. Robots verify the app's own
+# self-signed CA, so expose these ports at L4 without TLS termination or passthrough proxies.
+# Skipped when disabled or when neither gen3 nor gen4 is enabled.
+robotService:
+  enabled: true
+  type: LoadBalancer
+  annotations: {}
   loadBalancerIP: ""
   externalTrafficPolicy: ""
   ports:
-    http: 80
     gen3: 443
     gen4: 3443
 

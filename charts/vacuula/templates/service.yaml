@@ -10,28 +10,10 @@ metadata:
   {{- end }}
 spec:
   type: {{ .Values.service.type }}
-  {{- with .Values.service.loadBalancerIP }}
-  loadBalancerIP: {{ . }}
-  {{- end }}
-  {{- with .Values.service.externalTrafficPolicy }}
-  externalTrafficPolicy: {{ . }}
-  {{- end }}
   ports:
-    - port: {{ .Values.service.ports.http }}
+    - port: {{ .Values.service.port }}
       targetPort: http
       protocol: TCP
       name: http
-    {{- if .Values.vacuula.gen3Enabled }}
-    - port: {{ .Values.service.ports.gen3 }}
-      targetPort: gen3
-      protocol: TCP
-      name: gen3
-    {{- end }}
-    {{- if .Values.vacuula.gen4Enabled }}
-    - port: {{ .Values.service.ports.gen4 }}
-      targetPort: gen4
-      protocol: TCP
-      name: gen4
-    {{- end }}
   selector:
     {{- include "vacuula.selectorLabels" . | nindent 4 }}

@@ -37,6 +37,6 @@ spec:
         - name: {{ include "vacuula.fullname" . }}
           group: ""
           kind: Service
-          port: {{ .Values.service.ports.http }}
+          port: {{ .Values.service.port }}
           weight: 1
 {{- end }}

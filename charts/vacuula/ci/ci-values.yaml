@@ -11,3 +11,7 @@ ingress:
       paths:
         - path: /
           pathType: Prefix
+
+# KinD has no LoadBalancer controller; helm --wait would block on the external IP.
+robotService:
+  type: ClusterIP
