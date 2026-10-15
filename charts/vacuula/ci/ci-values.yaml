@@ -1,0 +1,13 @@
+env:
+  "VACUULA_TZ": "Europe/Berlin"
+
+persistence:
+  size: 128Mi
+
+ingress:
+  enabled: true
+  hosts:
+    - host: vacuula.chart-example.local
+      paths:
+        - path: /
+          pathType: Prefix
