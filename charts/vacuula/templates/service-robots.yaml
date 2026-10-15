@@ -1,4 +1,4 @@
-{{- if and .Values.robotService.enabled (or .Values.vacuula.gen3Enabled .Values.vacuula.gen4Enabled) }}
+{{- if and .Values.robotService.enabled (or .Values.vacuula.gen3Enabled .Values.vacuula.gen4Enabled .Values.robotService.http.enabled) }}
 apiVersion: v1
 kind: Service
 metadata:
@@ -18,6 +18,12 @@ spec:
   externalTrafficPolicy: {{ . }}
   {{- end }}
   ports:
+    {{- if .Values.robotService.http.enabled }}
+    - port: {{ .Values.robotService.http.port }}
+      targetPort: http
+      protocol: TCP
+      name: http
+    {{- end }}
     {{- if .Values.vacuula.gen3Enabled }}
     - port: {{ .Values.robotService.ports.gen3 }}
       targetPort: gen3

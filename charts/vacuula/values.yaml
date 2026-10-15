@@ -61,7 +61,7 @@ service:
 
 # Robot endpoints (gen3/gen4), rendered as <fullname>-robots. Robots verify the app's own
 # self-signed CA, so expose these ports at L4 without TLS termination or passthrough proxies.
-# Skipped when disabled or when neither gen3 nor gen4 is enabled.
+# Skipped when disabled or when no port below is enabled.
 robotService:
   enabled: true
   type: LoadBalancer
@@ -71,6 +71,12 @@ robotService:
   ports:
     gen3: 443
     gen4: 3443
+  # Plain HTTP web UI/API on the robot IP. The Vacuula installer only talks plain HTTP
+  # (/api/cert, /api/server) to the IP the robot uses later, and that IP becomes the robot's
+  # vacuula-local-<ip>.nip.io server name. Enable while provisioning robots, disable after.
+  http:
+    enabled: false
+    port: 80
 
 # This block is for setting up the ingress for more information can be found here: https://kubernetes.io/docs/concepts/services-networking/ingress/
 # Targets the http port only.
@@ -145,6 +151,13 @@ volumes: []
 
 # Additional volumeMounts on the output StatefulSet definition.
 volumeMounts: []
+
+# Gen3 map/log uploads go to vacuula-local-<ip>.nip.io, where <ip> is host.docker.internal if it
+# resolves, else the pod IP. Point host.docker.internal at the robotService IP so robots reach it.
+hostAliases: []
+#  - ip: 192.0.2.10
+#    hostnames:
+#      - host.docker.internal
 
 nodeSelector: {}
 
