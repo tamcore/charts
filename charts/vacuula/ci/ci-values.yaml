@@ -1,0 +1,17 @@
+env:
+  "VACUULA_TZ": "Europe/Berlin"
+
+persistence:
+  size: 128Mi
+
+ingress:
+  enabled: true
+  hosts:
+    - host: vacuula.chart-example.local
+      paths:
+        - path: /
+          pathType: Prefix
+
+# KinD has no LoadBalancer controller; helm --wait would block on the external IP.
+robotService:
+  type: ClusterIP
