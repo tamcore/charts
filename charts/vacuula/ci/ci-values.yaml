@@ -1,5 +1,5 @@
 env:
-  "VACUULA_TZ": "Europe/Berlin"
+  "TZ": "Europe/Berlin"
 
 persistence:
   size: 128Mi

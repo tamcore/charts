@@ -25,7 +25,7 @@ spec:
       name: http
     {{- end }}
     {{- if .Values.vacuula.gen3Enabled }}
-    - port: {{ .Values.robotService.ports.gen3 }}
+    - port: {{ .Values.vacuula.gen3Port }}
       targetPort: gen3
       protocol: TCP
       name: gen3

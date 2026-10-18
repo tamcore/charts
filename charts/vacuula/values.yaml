@@ -31,7 +31,7 @@ podAnnotations: {}
 # For more information checkout: https://kubernetes.io/docs/concepts/overview/working-with-objects/labels/
 podLabels: {}
 
-# The image runs as root and binds 443 (Gen3) and VACUULA_PORT (80 by default).
+# The image runs as root and binds VACUULA_PORT (80 by default).
 podSecurityContext: {}
 
 securityContext: {}
@@ -41,15 +41,16 @@ vacuula:
   port: 80
   # Gen4 robots, raw TLS. Rendered as GEN4_PORT.
   gen4Port: 3443
-  # Gen3 robots, TLS on the fixed port 443.
+  # Gen3 robots, TLS. Rendered as GEN3_PORT, range 100-999. The installer writes it into the robot.
+  gen3Port: 335
   gen3Enabled: true
   gen4Enabled: true
   # mDNS does not reach the LAN from the pod network.
   mdnsEnabled: false
 
-# Additional environment variables, e.g. VACUULA_TZ.
+# Additional environment variables, e.g. TZ.
 env: {}
-  # "VACUULA_TZ": "Europe/Berlin"
+  # "TZ": "Europe/Berlin"
 
 # This is for setting up a service more information can be found here: https://kubernetes.io/docs/concepts/services-networking/service/
 # Web UI + API (http port). Ingress and HTTPRoute target this Service.
@@ -68,12 +69,12 @@ robotService:
   annotations: {}
   loadBalancerIP: ""
   externalTrafficPolicy: ""
+  # gen3 uses vacuula.gen3Port, because the robot connects to the port the installer wrote.
   ports:
-    gen3: 443
     gen4: 3443
   # Plain HTTP web UI/API on the robot IP. The Vacuula installer only talks plain HTTP
-  # (/api/cert, /api/server) to the IP the robot uses later, and that IP becomes the robot's
-  # vacuula-local-<ip>.nip.io server name. Enable while provisioning robots, disable after.
+  # (/api/cert, /api/server) to the IP the robot uses later. Enable while provisioning robots,
+  # disable after.
   http:
     enabled: false
     port: 80
@@ -152,12 +153,10 @@ volumes: []
 # Additional volumeMounts on the output StatefulSet definition.
 volumeMounts: []
 
-# Gen3 map/log uploads go to vacuula-local-<ip>.nip.io, where <ip> is host.docker.internal if it
-# resolves, else the pod IP. Point host.docker.internal at the robotService IP so robots reach it.
 hostAliases: []
 #  - ip: 192.0.2.10
 #    hostnames:
-#      - host.docker.internal
+#      - example.local
 
 nodeSelector: {}
 

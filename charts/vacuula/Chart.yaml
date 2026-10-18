@@ -13,4 +13,4 @@ version: 0.1.0
 # follow Semantic Versioning. They should reflect the version the application is using.
 # It is recommended to use it with quotes.
 # renovate: datasource=docker depName=ghcr.io/vacuula/vacuula
-appVersion: "1.0.0"
+appVersion: "1.1.0-b1"

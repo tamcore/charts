@@ -48,7 +48,7 @@ spec:
               protocol: TCP
             {{- if .Values.vacuula.gen3Enabled }}
             - name: gen3
-              containerPort: 443
+              containerPort: {{ .Values.vacuula.gen3Port }}
               protocol: TCP
             {{- end }}
             {{- if .Values.vacuula.gen4Enabled }}
@@ -71,6 +71,8 @@ spec:
           env:
             - name: VACUULA_PORT
               value: {{ .Values.vacuula.port | quote }}
+            - name: GEN3_PORT
+              value: {{ .Values.vacuula.gen3Port | quote }}
             - name: GEN4_PORT
               value: {{ .Values.vacuula.gen4Port | quote }}
             - name: GEN3_ENABLED
