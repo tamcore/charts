@@ -272,6 +272,27 @@ entries:
     version: 1.0.0
   lunasea-web:
   - apiVersion: v2
+    appVersion: 0.5.0
+    created: "2026-10-19T22:19:25.337784908Z"
+    description: Self-hosted web build of LunaSea — a controller dashboard for self-hosted
+      media software (Radarr, Sonarr, Lidarr, SABnzbd, NZBGet, Tautulli, ...).
+    digest: f8a492f9f1bd835923fe7b140ae5195b0bfc2d38b3adc4a9d794521fcd0d138d
+    home: https://github.com/alysson-souza/lunasea-web
+    keywords:
+    - lunasea
+    - media
+    - dashboard
+    - radarr
+    - sonarr
+    - self-hosted
+    name: lunasea-web
+    sources:
+    - https://github.com/alysson-souza/lunasea-web
+    type: application
+    urls:
+    - https://github.com/tamcore/charts/releases/download/lunasea-web-0.2.0/lunasea-web-0.2.0.tgz
+    version: 0.2.0
+  - apiVersion: v2
     appVersion: 0.4.1
     created: "2026-09-07T13:22:56.973987067Z"
     description: Self-hosted web build of LunaSea — a controller dashboard for self-hosted
@@ -3397,4 +3418,4 @@ entries:
     urls:
     - https://github.com/tamcore/charts/releases/download/redis-ha-5.0.0/redis-ha-5.0.0.tgz
     version: 5.0.0
-generated: "2026-10-16T16:34:36.764972331Z"
+generated: "2026-10-19T22:19:25.338192783Z"
