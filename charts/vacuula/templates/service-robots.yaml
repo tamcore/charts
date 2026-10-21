@@ -1,0 +1,41 @@
+{{- if and .Values.robotService.enabled (or .Values.vacuula.gen3Enabled .Values.vacuula.gen4Enabled .Values.robotService.http.enabled) }}
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ include "vacuula.fullname" . }}-robots
+  labels:
+    {{- include "vacuula.labels" . | nindent 4 }}
+  {{- with .Values.robotService.annotations }}
+  annotations:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
+spec:
+  type: {{ .Values.robotService.type }}
+  {{- with .Values.robotService.loadBalancerIP }}
+  loadBalancerIP: {{ . }}
+  {{- end }}
+  {{- with .Values.robotService.externalTrafficPolicy }}
+  externalTrafficPolicy: {{ . }}
+  {{- end }}
+  ports:
+    {{- if .Values.robotService.http.enabled }}
+    - port: {{ .Values.robotService.http.port }}
+      targetPort: http
+      protocol: TCP
+      name: http
+    {{- end }}
+    {{- if .Values.vacuula.gen3Enabled }}
+    - port: {{ .Values.vacuula.gen3Port }}
+      targetPort: gen3
+      protocol: TCP
+      name: gen3
+    {{- end }}
+    {{- if .Values.vacuula.gen4Enabled }}
+    - port: {{ .Values.robotService.ports.gen4 }}
+      targetPort: gen4
+      protocol: TCP
+      name: gen4
+    {{- end }}
+  selector:
+    {{- include "vacuula.selectorLabels" . | nindent 4 }}
+{{- end }}
