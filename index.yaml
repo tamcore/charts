@@ -882,6 +882,16 @@ entries:
     version: 0.1.0
   mautrix-telegram:
   - apiVersion: v2
+    appVersion: v0.2611.0
+    created: "2026-11-17T01:55:52.981057296Z"
+    description: A Matrix-Telegram puppeting bridge
+    digest: cf1b57e51fb7179c2c8aeebf57d64ef85b5aba9980c285c5c8db30b658253655
+    name: mautrix-telegram
+    type: application
+    urls:
+    - https://github.com/tamcore/charts/releases/download/mautrix-telegram-0.6.0/mautrix-telegram-0.6.0.tgz
+    version: 0.6.0
+  - apiVersion: v2
     appVersion: v0.2610.0
     created: "2026-10-16T16:34:16.021997438Z"
     description: A Matrix-Telegram puppeting bridge
@@ -3523,4 +3533,4 @@ entries:
     urls:
     - https://github.com/tamcore/charts/releases/download/redis-ha-5.0.0/redis-ha-5.0.0.tgz
     version: 5.0.0
-generated: "2026-11-17T01:55:31.52548559Z"
+generated: "2026-11-17T01:55:52.981533181Z"
