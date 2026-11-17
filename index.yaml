@@ -3533,4 +3533,16 @@ entries:
     urls:
     - https://github.com/tamcore/charts/releases/download/redis-ha-5.0.0/redis-ha-5.0.0.tgz
     version: 5.0.0
-generated: "2026-11-17T01:55:52.981533181Z"
+  vacuula:
+  - apiVersion: v2
+    appVersion: 1.1.1
+    created: "2026-11-17T18:13:44.732037754Z"
+    description: Self-hosted replacement for the Neato cloud. Serves the web UI and
+      the Gen3/Gen4 robot endpoints.
+    digest: 7b98e5f04e316da58170c5a3dbf65f53f500fec5fd15f44885f17c48cb024fd2
+    name: vacuula
+    type: application
+    urls:
+    - https://github.com/tamcore/charts/releases/download/vacuula-0.1.0/vacuula-0.1.0.tgz
+    version: 0.1.0
+generated: "2026-11-17T18:13:44.732446768Z"
