@@ -31,14 +31,14 @@ podAnnotations: {}
 # For more information checkout: https://kubernetes.io/docs/concepts/overview/working-with-objects/labels/
 podLabels: {}
 
-# The image runs as root and binds VACUULA_PORT (80 by default).
+# The image runs as root and binds gen3Port (below 1024).
 podSecurityContext: {}
 
 securityContext: {}
 
 vacuula:
   # Web UI + API, plain HTTP. Rendered as VACUULA_PORT.
-  port: 80
+  port: 8050
   # Gen4 robots, raw TLS. Rendered as GEN4_PORT.
   gen4Port: 3443
   # Gen3 robots, TLS. Rendered as GEN3_PORT, range 100-999. The installer writes it into the robot.
@@ -48,9 +48,10 @@ vacuula:
   # mDNS does not reach the LAN from the pod network.
   mdnsEnabled: false
 
-# Additional environment variables, e.g. TZ.
+# Additional environment variables, e.g. TZ or LOG_LEVEL.
 env: {}
   # "TZ": "Europe/Berlin"
+  # "LOG_LEVEL": "info"
 
 # This is for setting up a service more information can be found here: https://kubernetes.io/docs/concepts/services-networking/service/
 # Web UI + API (http port). Ingress and HTTPRoute target this Service.
@@ -74,10 +75,10 @@ robotService:
     gen4: 3443
   # Plain HTTP web UI/API on the robot IP. The Vacuula installer only talks plain HTTP
   # (/api/cert, /api/server) to the IP the robot uses later. Enable while provisioning robots,
-  # disable after.
+  # disable after. The installer probes port 8050 by default.
   http:
     enabled: false
-    port: 80
+    port: 8050
 
 # This block is for setting up the ingress for more information can be found here: https://kubernetes.io/docs/concepts/services-networking/ingress/
 # Targets the http port only.
